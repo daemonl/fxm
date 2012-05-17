@@ -1,0 +1,16 @@
+# taken from github/gitignore
+
+*~
+
+app/bootstrap*
+
+vendor/*
+*/logs/*
+*/cache/*
+web/uploads/*
+web/bundles/*
+nbproject*
+
+app/config/parameters.ini
+/nbproject/private/
+/.idea/
