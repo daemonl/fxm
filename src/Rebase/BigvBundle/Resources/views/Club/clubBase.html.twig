@@ -1,0 +1,19 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block top %}
+<ul class="breadcrumb">
+  <li>
+    <a href="{{path('_RBV_home')}}">Home</a> <span class="divider">/</span>
+  </li>
+  <li>
+    <a href="{{path('_RBV_club_index')}}">Clubs</a> <span class="divider">/</span>
+  </li>
+  <li class="active">{{club.getName()}}</li>
+</ul>
+{% endblock %}
+
+{% block main %}
+
+ {% block clubContent %} {% endblock %}
+
+{% endblock %}

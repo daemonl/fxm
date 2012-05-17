@@ -1,0 +1,12 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block pageTitle %}
+  {{context.season.getName}}
+{% endblock %}
+
+{% block main %}
+<h2>{{context.season.start.format("d M Y")}} - {{context.season.stop.format("d M Y")}}</h2>
+
+<a href="{{path('_RBV_settings_rounds')}}">Rounds</a>
+       
+{% endblock %}

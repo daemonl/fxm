@@ -1,0 +1,54 @@
+body {background: #fff url(images/bd2.jpg) center top; }
+#TopContainer {background: #fff; height: 200px; }
+#TopContent {border: solid 1px #666; color: #000; background: #fff; border-top: none; border-radius: 0 0 10px 10px;  margin-bottom: 10px;}
+#MainContent {border: solid 1px #666666; border-radius: 10px; background: #fff;}
+
+#TopContent a {color: #333;}
+h1 {display: block; color: #fff; text-shadow: 1px 1px 2px #000; background: #41a7ff; border-bottom: solid 1px #666666; border-radius: 8px 8px 0 0 ; font-size: 16px; padding-left: 10px; margin-bottom: 10px;}
+
+.flash-notice {width: 948px; margin: auto; margin-top: 10px; margin-bottom: 10px; padding: 5px; border-radius: 8px; border: solid 1px #666666;}
+.flash-error {width: 948px; margin: auto; margin-top: 10px; margin-bottom: 10px; padding: 5px; color: #900; background: #999; border-radius: 8px; border: solid 1px #666666;}
+
+table.tblH th {padding-right: 5px; text-align: left;}
+
+.bordered { padding: 5px; background: #fff; border: solid 1px #666666; border-radius: 10px; margin: 10px;}
+.bordered h1 {border-radius: 8px;}
+
+table.form {}
+table.form th {text-align: right; padding-right: 5px;  vertical-align: top;}
+table.form td {text-align: left; vertical-align: top;}
+
+table.calendar {}
+table.calendar td {border: solid 1px #666666;} 
+table.calendar td.day {min-height: 40px; width: 60px;}
+table.calendar td.day div.dayLabel {padding: 3px;  }
+
+div.roundHolder {min-height: 20px; width: 60px; position: relative;}
+
+div.CalRoundStart {border: solid 1px #FF6600; border-radius: 8px 0 0 8px; background: #FFC; height: 16px; margin-left: 5px; border-right: none;}
+div.CalRoundMid {border: solid 1px #FF6600; background: #FFC; height: 16px; border-left: none; border-right: none;}
+div.CalRoundEnd {border: solid 1px #FF6600; border-radius: 0 8px 8px 0; background: #FFC; height: 16px; margin-right: 5px; border-left: none;}
+
+div.CalRoundCol0 { background-color: #FFC;}
+div.CalRoundCol1 { background-color: #9C9;}
+div.CalRoundCol2 { background-color: #6CC;}
+
+table.MATRIX td {border: solid 1px #333333;}
+ 
+.btn2{ margin: 5px; color: #000; text-shadow: 1px 1px 1px #fff; background: url(images/gradient1.jpg); box-shadow: 1px 1px 1px #444; text-decoration: none; text-align: center; border: solid 1px #333333;  cursor: pointer; display: inline-block; padding: 6px; border-radius: 8px;}
+
+.btn2:HOVER{ background: #66ccff}
+
+.AutoLayout {display: inline-block; vertical-align: top; }
+
+
+.homegame { background: #3CF; }
+.awaygame { background: #96F; }
+
+.want0 {background: #777;}
+.want1 {background: #ffdddd; }
+.want2 {background: #ffffdd; }
+.want3 {background: #ddffdd; }
+
+.CounterTeamDayHome {background: #09C;}
+.CounterTeamDayAway {background: #63C;}

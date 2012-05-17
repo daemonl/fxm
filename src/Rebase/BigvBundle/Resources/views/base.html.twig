@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>{% block title %}Schkit{% endblock %}</title>
+  <link rel="stylesheet" type="text/css" href="{{asset('libraries/bootstrap/css/bootstrap.min.css')}}" />
+  <link id="Link3" rel="stylesheet" type="text/css" href="{{ asset('css/rebase.css') }}" />
+  
+    <script type="text/javascript" src="{{asset('js/jquery-1.7.2.min.js')}}"></script>
+    <script type="text/javascript" src="{{asset('js/jquery-ui-1.8.18.min.js')}}"></script>
+
+  {% block endHead %}{% endblock %}
+    <script type="text/javascript">
+      function PleaseWait()
+      {
+        $("#pleaseWait").show();
+        $("#pleaseWaitBG").show();
+      }
+      
+      function EndWait()
+      {
+        $("#pleaseWait").hide();
+        $("#pleaseWaitBG").hide();
+      }
+      $(document).ready(function(){ EndWait(); } );
+    </script>
+</head>
+<body>
+  {% block body %}
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="">{% if context.league %} {{context.league.shortname}}{% endif %}</a>
+        <div class="nav-collapse">
+          {% block navigation %}
+          <ul class="nav">
+            {% if context.season %}
+            <li><a href="{{path('_RBV_matrix_index')}}">Matrix</a></li>
+            <li><a href="{{path('_RBV_dayview_index')}}">Court Plan</a></li>
+            <li><a href="{{path('_RBV_club_index')}}">Clubs</a></li>
+            <li><a href="{{path('_RBV_division_index')}}">Divisions</a></li>
+            <li><a href="{{path('_RBV_venue_index')}}">Venues</a></li>
+            <li><a href="{{path('_RBV_export_index')}}">Exports</a></li>
+            {% endif %}
+          </ul>
+           {% endblock %}
+        </div>
+        <div class="nav-collapse">
+          <div class="nav">
+        {% block user %}
+          {{app.user.email}}
+          <a class="btn" href="{{ path('logout') }}">Log Out</a>
+        {% endblock %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container" style="margin-top: 60px;">
+    {% block top %}{% endblock %}
+  </div>
+  <div id="MainContent" class="container">
+    <h1>{% block pageTitle %}{% endblock %}</h1>
+    
+    
+    {% block warnings %}{% endblock %}
+      
+    {% if app.session.hasFlash('notice') %}
+    <div class="alert alert-info">
+        {{ app.session.flash('notice') }}
+    </div>
+{% endif %}
+ {% if app.session.hasFlash('good') %}
+    <div class="alert alert-success">
+        {{ app.session.flash('good') }}
+    </div>
+{% endif %}
+ {% if app.session.hasFlash('error') %}
+    <div class="alert alert-error">
+        {{ app.session.flash('error') }}
+    </div>
+{% endif %} 
+      
+    {% block main %} {% endblock %}
+  </div>
+  {% endblock %}
+    
+    
+<div id="pleaseWait">
+  <div class="img">
+    Loading...
+  </div>
+</div>
+<div id="pleaseWaitBG">
+</div>
+    <script type="text/javascript" src="{{asset('libraries/bootstrap/js/bootstrap.js')}}"></script>
+    <script type="text/javascript" src="{{asset('libraries/watermark/jquery.watermark.min.js')}}"></script>
+    
+</body>
+</html>

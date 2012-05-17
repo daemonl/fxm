@@ -1,0 +1,12 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block top %} <div class="grid_5"> <a href="{{path('_RBV_home')}}">Home</a> >  Matrix  </div> {% endblock %}
+
+{% block main %}
+<h1>Matrix Menu</h1>
+<div class="grid_16">
+  {% for division in divisions %}
+    <a class="btn2" style="width: 130px;" href="{{ path('_RBV_matrix_show', { 'divisionName': division.getName()}) }}">{{division.getName}}</a>
+  {% endfor %}
+</div>
+{% endblock %}

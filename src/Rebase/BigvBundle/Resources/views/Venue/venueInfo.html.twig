@@ -1,0 +1,18 @@
+{% extends 'RebaseBigvBundle:Venue:venueBase.html.twig' %}
+
+{% block main %}
+<h1>Venue Information</h1>
+ <div class="grid_16">
+ 
+ <form action="{{ path('_RBV_venue_info', { 'venue': venue.getID()}) }}" method="post" {{ form_enctype(form) }}>
+  {{ form_errors(form) }}
+	<table class="Form">
+	  <tr><th>{{form_label(form.name) }}:</th><td>{{form_widget(form.name) }}</td>
+	  <tr><th>{{form_label(form.FullName) }}:</th><td>{{form_widget(form.FullName) }}</td>
+	  <tr><th>{{form_label(form.Address) }}:</th><td>{{form_widget(form.Address) }}</td>
+	  <tr><td></td><td><input type="submit" value="Update"/></td></tr>
+	</table>
+	{{ form_rest(form) }}
+</form>
+</div>
+{% endblock %}

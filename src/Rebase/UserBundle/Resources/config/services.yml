@@ -1,0 +1,9 @@
+parameters:
+#    sl_secured.example.class: Sl\SecuredBundle\Example
+
+
+services:
+    twig.extension.bigv_extension:
+        class: Rebase\BigvBundle\Statics\bigv_extension
+        tags:
+            - { name: twig.extension }

@@ -1,0 +1,263 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block endHead %}
+<style type="text/css">
+
+  	.cal {position: relative;                  
+	  -moz-user-select: none;
+      -webkit-user-select: none;
+      user-select:none;}
+	 .cal td {border: solid 1px #CCCCCC; width: 100px; padding: 3px;}
+	.dayLabel {margin-bottom: 5px;}
+    .dayHolder {min-height: 30px; }
+	.tsStart, .tsMid, .tsEnd {height: 25px; border: solid 1px blue; position: absolute; background: #D8E2E2; text-align: center;}
+	.tsStart {width: 10px; background: blue; border-radius: 8px 0 0 8px; cursor: pointer; top: 300px; }
+	.tsEnd {width: 10px; background: blue; border-radius: 0 8px 8px 0;  cursor: pointer;}
+	 
+	.tsColor1 .tsStart, .tsColor1 .tsMid, .tsColor1 .tsEnd {border-color: #06C}
+	.tsColor1 .tsStart, .tsColor1 .tsEnd {background: #06C}
+	.tsColor1 .tsMid {background: #CCE0E1}
+	
+	.tsColor2 .tsStart, .tsColor2 .tsMid, .tsColor2 .tsEnd {border-color: #6C0}
+	.tsColor2 .tsStart, .tsColor2 .tsEnd {background: #6C0}
+	.tsColor2 .tsMid {background: #E0E1CC}
+	
+	.tsColor3 .tsStart, .tsColor3 .tsMid, .tsColor3 .tsEnd {border-color: #C06}
+	.tsColor3 .tsStart, .tsColor3 .tsEnd {background: #C06}
+	.tsColor3 .tsMid {background: #E1CCE0}
+  
+  .snapHolderS {height: 27px; width: 12px; border: solid 1px blue; float: left; }
+  .snapHolderE {height: 27px; width: 12px; border: solid 1px red;  float: right;}
+</style>
+
+{% endblock %}
+
+{% block top %}
+  <div class="grid_5">
+    <p><a href="{{ path('_RBV_settings_index') }}">Settings</a> > </p>
+  </div>
+  <div class="grid_5">
+    
+  </div>
+{% endblock %}
+
+{% block main %}
+<script type="text/javascript">
+ var Rounds = new Array();
+ var SpanUp = null;
+ var LastDayDivDone = null;
+ 
+ function EnterDay(DayElement)
+ {
+    LastDayDivDone = DayElement;
+ 	ArrangeDay(DayElement);
+ }
+ 
+ function ArrangeDay(DayElement)
+ {
+ 
+   if (SpanUp != null)
+   {
+      if ($(SpanUp).hasClass("tsStart"))
+			  {
+			    $(SpanUp).css("top", $(DayElement).position().top + "px");
+			    $(SpanUp).css("left", $(DayElement).position().left  + "px");
+				  Rounds[$(SpanUp).parent().attr('round')][2] = $(DayElement).parent().attr('rawday');
+			  }
+			  if ($(SpanUp).hasClass("tsEnd"))
+			  {
+			    $(SpanUp).css("top", $(DayElement).position().top + "px");
+			    $(SpanUp).css("left", ($(DayElement).position().left + $(DayElement).width() - $(SpanUp).width()) + "px");	
+				Rounds[$(SpanUp).parent().attr('round')][3] = $(DayElement).parent().attr('rawday');			  
+			  }
+			  if (($(SpanUp).hasClass("tsStart"))||($(SpanUp).hasClass("tsEnd")))
+			  {
+			  	var roundID = $(SpanUp).parent().attr('round');
+				  var TR;
+				  var C = $(SpanUp).parent();
+				  var S = $(C).children(".tsStart");
+				  var E = $(C).children(".tsEnd");
+				  $(".cal tr.week").each(function(){
+					if ($(this).children("td").first().children(".dayHolder").first().position().top == $(S).position().top)
+					{
+						TR = $(this);
+					}
+				  });
+				  if (TR == null)
+				  {
+				  return;
+				  }
+				  $(C).children(".tsMid").remove();
+				  $(C).append("<div class='tsMid'>Round " + Rounds[roundID][1] + "</div>");
+				  var M = $(C).children(".tsMid").last();
+				  $(M).css("top", $(S).position().top + "px");
+				  $(M).css("left", ($(S).position().left + $(S).width()) + "px");
+				 
+				  while ($(M).position().top < $(E).position().top)
+				  {
+					$(M).css("width", (
+					$(TR).children("td").last().children(".dayHolder").first().position().left
+					+ $(TR).children("td").last().children(".dayHolder").first().width() - $(M).width() - $(M).position().left
+					+50) + "px");
+				  	$(C).append("<div class='tsMid'>Round " + Rounds[roundID][1] + "</div>");
+				    var M = $(C).children(".tsMid").last();
+					TR = $(TR).next("tr.week");
+					var H = $(TR).children("td").first().children(".dayHolder").first();
+					$(M).css("top", $(H).position().top + "px");
+					$(M).css("left", $(H).position().left + "px");
+				  }
+				  $(M).css("width", ($(E).position().left - $(M).position().left) + "px");
+			  }
+		  }
+	}
+ 
+ function SETMID(SpanUp)
+ {
+   	var roundID = $(SpanUp).parent().attr('round');
+		var TR;
+		var C = $(SpanUp).parent();
+		var S = $(C).children(".tsStart");
+		var E = $(C).children(".tsEnd");
+    
+    TR = $(".day[ts="+$(S).attr('ts')+"]").parent();
+				
+		if (TR == null) { return; }
+    
+		$(C).children(".tsMid").remove();
+		$(C).append("<div class='tsMid'>Round " + Rounds[roundID][1] + "</div>");
+    
+		var M = $(C).children(".tsMid").last();
+    
+		$(M).css("top", $(S).position().top + "px");
+		$(M).css("left", ($(S).position().left + $(S).width()) + "px");
+				 
+  
+				  while ($(M).position().top < $(E).position().top)
+				  {
+					$(M).css("width", (
+					$(TR).children("td").last().children(".dayHolder").first().position().left
+					+ $(TR).children("td").last().children(".dayHolder").first().width() - $(M).width() - $(M).position().left
+					+50) + "px");
+				  	$(C).append("<div class='tsMid'>Round " + Rounds[roundID][1] + "</div>");
+				    var M = $(C).children(".tsMid").last();
+					TR = $(TR).next("tr.week");
+					var H = $(TR).children("td").first().children(".dayHolder").first();
+					$(M).css("top", $(H).position().top + "px");
+					$(M).css("left", $(H).position().left + "px");
+				  }
+				  $(M).css("width", ($(E).position().left - $(M).position().left) + "px");
+ }
+ 
+ function DrawRounds()
+ {
+  $(".tsCont").remove();
+ 	for (r in Rounds)
+	{
+		$(".cal").append("<div class='tsCont tsColor" + (r%3 + 1) + "' round='" + r + "'><div class='tsStart'></div><div class='tsEnd'></div></div>");
+		//SpanUp = $(".tsCont[round='" + r + "']").children(".tsEnd").first();		
+		//ArrangeDay($("#calDay_" + Rounds[r][3]).children(".dayHolder"));
+		
+		//SpanUp = $(".tsCont[round='" + r + "']").children(".tsStart").first();
+		//ArrangeDay($("#calDay_" + Rounds[r][2]).children(".dayHolder"));
+		//SpanUp = null;
+	}
+  	  
+	$(".tsStart").draggable({ snap: ".snapHolderS", snapMode: "inner" });
+  $(".tsEnd").draggable({ snap: ".snapHolderE", snapMode: "inner" });
+  $(".snapHolderS").droppable(
+    {
+      over: function(event, ui){
+        ui.draggable.attr('ts', $(this).attr('ts'));
+        SETMID(ui.draggable);
+      }
+    });
+ $(".snapHolderE").droppable(
+    {
+      over: function(event, ui){
+        ui.draggable.attr('ts', $(this).attr('ts'));
+        SETMID(ui.draggable);
+      }
+    });
+ }
+ 
+ function  UpdateRound(r)
+ {
+	$.ajax("{{path('_RBV_settings_rounds_ajax')}}", {
+	type: "POST",
+	dataType: 'json',
+	data: {roundID: Rounds[r][0], roundName: Rounds[r][1], roundStart: Rounds[r][2], roundEnd: Rounds[r][3]},
+	success: function(data){
+			}});
+ }
+ 
+  $(document).ready(function() {
+   {% for round in rounds %}
+      Rounds.push(new Array( {{round.getID() }},  "{{round.getNumber() }}",   "{{round.getRawStart() }}",   "{{round.getRawEnd() }}")); 
+   {% endfor %}
+  	 DrawRounds();
+  });
+
+
+
+  $(document).ready(function(){
+    $("#addRound").click(function(){
+      $("#Rounds tr:last").after("<tr class='ROUNDROW'><td>1</td><td><input class='datepicker' type='text' /></td><td><input class='datepicker' type='text' /></td></tr>");
+      $(".datepicker").datepicker();
+      
+      Rounds.push(new Array( 4,  "4",   "07-01-01",   "07-01-03")); 
+      DrawRounds();
+      var R = 1;
+      $(".ROUNDROW").each(function(){
+        $(this).children("td:first").html(R);
+        R++;
+      });
+    });
+  });
+</script>
+<div class="row">
+ 
+  <div class="span6 cal">
+  <table class="calendar">
+    <tr>
+      <th>Sun</th>
+      <th>Mon</th>
+      <th>Tue</th>
+      <th>Wed</th>
+      <th>Thu</th>
+      <th>Fri</th>
+      <th>Sat</th>
+	 </tr>
+    {% for week in calendar.getWeeks() %}
+    <tr class="week">
+		{% for day in week.getDays() %}
+		<td class="day" ts="{{day.Date.format('U')}}" id="calDay_{{day.Date.format('U')}}">
+		  <div class="dayLabel">{{ day.getShort() }}</div>
+		  <div class="dayHolder"><div class="snapHolderS" ts="{{day.Date.format('U')}}"></div><div class="snapHolderE" ts="{{day.Date.format('U')}}"></div></div>
+		</td> 
+		{% endfor %}
+	</tr>
+   {% endfor %}
+  </table>
+  </div>
+  <div class="span6">
+  
+<table class="table" id="Rounds">
+  <tr>
+    <th>Round</th>
+    <th>Start</th>
+    <th>End</th>
+  </tr>
+  {% for round in rounds %}
+    <tr>
+      <td>{{round.number}}</td>
+      <td>{{round.start.format("d M y")}}</td>
+      <td>{{round.stop.format("d M y")}}</td>
+    </tr>
+  {% endfor %}
+</table>
+  <a class="btn" id="addRound" href="#">Add Round</a>
+  
+  </div>
+  </div>
+{% endblock %}
+

@@ -1,0 +1,14 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block top %}
+  <div class="grid_5">
+    <a href="{{path('_RBV_home')}}">Home</a> > <a href="{{ path('_RBV_venue_index') }}">Venues</a> > {{ venue.getName() }}
+  </div>
+  <div class="grid_5">
+    
+  </div>
+{% endblock %}
+
+{% block main %}
+  Venue Body Placeholder
+{% endblock %}

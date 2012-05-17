@@ -1,0 +1,51 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block top %} <div class="grid_5"> <a href="{{path('_RBV_home')}}">Home</a> >  <a href="{{path('_RBV_export_index')}}">Export</a> > Simple </div> {% endblock %}
+
+{% block endHead %}
+
+<script type="text/javascript" src="{{ asset('js/jquery.tablesorter.min.js')}}"></script>
+<style type="text/css">
+
+table {width: 100%}
+td, th {border: solid 1px #ddd; padding: 3px;}
+th {text-align: left; background: #eee; cursor: pointer; }
+</style>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("table").tablesorter(); 
+  });
+</script>
+{% endblock %}
+
+{% block main %}
+<h1>{{exportTitle}}</h1>
+<div class="grid_16">
+  <table>
+  <thead>
+    <tr>
+      <th>ID</th>
+	  <th>Div</th>
+	  <th>Home</th>
+	  <th>Away</th>
+	  <th>Venue</th>
+	  <th>Date</th>
+	  <th>Time</th>
+	</tr>
+	</thead>
+	<tbody>
+  {% for game in games %}
+ 	<tr>
+		<td>{{game.GameID}}</td>
+		<td>{{game.DivisionShort}}</td>
+		<td>{{game.HomeTeamLong}}</td>
+		<td>{{game.AwayTeamLong}}</td>
+		<td>{{game.VenueShort}}</td>
+		<td>{{game.DateLong}}</td>
+		<td>{{game.TimeLong}}</td>
+	</tr>
+  {% endfor %}
+  </tbody>
+  </table>
+</div>
+{% endblock %}

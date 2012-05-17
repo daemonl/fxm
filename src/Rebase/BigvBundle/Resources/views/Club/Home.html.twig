@@ -1,0 +1,31 @@
+{% extends 'RebaseBigvBundle:Club:clubBase.html.twig' %}
+
+
+{% block clubContent %}
+<h1>Teams for {{club.getName()}}</h1>
+{% for team in teams %}
+  	<div class="bordered AutoLayout" >
+    <p><strong>{{team.Division.getName}}</strong></p>
+	{% if team.Exists == 1 %}
+    <a style="display: block; width: 100px;" class="BTN addDivision" href="{{path('_RBV_club_removeTeam', { 'clubID': club.getID(), 'teamID': team.Team.getID()})}}">Delete Team</a>
+
+    <p><strong>Home Venues:</strong></p>
+		{% for link in team.Venues %}
+		  {{link.venue.getName}} - <a href="{{ path('_RBV_club_removeVenueFromTeam', { 'clubID': club.getID(), 'linkID': link.getID()}) }}">remove</a><br/>
+		{% else %}
+      (none)
+    {% endfor %}
+    <form action="{{ path('_RBV_club_addVenueToTeam', { 'clubID': club.getID(), 'teamID': team.Team.getID()}) }}" method="post" {{ form_enctype(team.Form) }}>
+      {{ form_widget(team.Form.venue) }}<input type="submit" value="Add Venue" /> {{ form_rest(team.Form) }}
+    </form>
+    
+	{% else %}
+	   <a style="display: block; width: 100px;" class="BTN addDivision" href="{{path('_RBV_club_addTeam', { 'clubID': club.getID(), 'divisionID': team.Division.getID()})}}">Add Team</a>
+	{% endif %}
+	
+   
+	</div>
+
+{% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block pageTitle %}New Account{% endblock %}
+{% block user %}{% endblock %}
+{% block main %}
+
+<form class="form-horizontal" action="{{ path('newuser') }}" method="post">
+  <fieldset>  
+    {{ form_rest(form) }}
+  </fieldset>
+    
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">Sign Up</button>
+  </div>  
+</form>
+
+    {% endblock %}

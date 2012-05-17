@@ -3,7 +3,7 @@
 if (!isset($_SERVER['HTTP_HOST'])) {
     exit('This script cannot be run from the CLI. Run it from a browser.');
 }
-
+/*
 if (!in_array(@$_SERVER['REMOTE_ADDR'], array(
     '127.0.0.1',
     '::1',
@@ -11,7 +11,7 @@ if (!in_array(@$_SERVER['REMOTE_ADDR'], array(
     header('HTTP/1.0 403 Forbidden');
     exit('This script is only accessible from localhost.');
 }
-
+*/
 $majorProblems = array();
 $minorProblems = array();
 $phpini = false;
@@ -141,8 +141,8 @@ if (ini_get('session.auto_start')) {
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8" />
-        <link href="bundles/sensiodistribution/webconfigurator/css/install.css" rel="stylesheet" media="all" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <link href="bundles/sensiodistribution/webconfigurator/css/install.css" rel="stylesheet" type="text/css" media="all" />
         <title>Symfony Configuration</title>
     </head>
     <body>
@@ -188,13 +188,14 @@ if (ini_get('session.auto_start')) {
 
                     <?php if ($phpini): ?>
                             <a id="phpini"></a>
-                            <p>*
-                                <?php if (get_cfg_var('cfg_file_path')): ?>
-                                    Changes to the <strong>php.ini</strong> file must be done in "<strong><?php echo get_cfg_var('cfg_file_path') ?></strong>".
-                                <?php else: ?>
-                                    To change settings, create a "<strong>php.ini</strong>".
-                                <?php endif; ?>
-                            </p>
+                                <p>*
+                                    <?php if (get_cfg_var('cfg_file_path')): ?>
+                                        Changes to the <strong>php.ini</strong> file must be done in "<strong><?php echo get_cfg_var('cfg_file_path') ?></strong>".
+                                    <?php else: ?>
+                                        To change settings, create a "<strong>php.ini</strong>".
+                                    <?php endif; ?>
+                                </p>
+                            </div>
                     <?php endif; ?>
 
                     <ul class="symfony-install-continue">

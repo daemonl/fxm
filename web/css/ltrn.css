@@ -1,0 +1,138 @@
+body {background: #eee;}
+
+.mainContent
+{
+	border: solid 1px #000;
+	}
+.header
+{
+	background: #000 url(images/header.gif) no-repeat center 0;
+	height: 120px;
+	position: relative;
+	border: solid 1px #000;	
+	margin-top: 10px; 
+}
+
+
+.HeaderLoginForm #username, .HeaderLoginForm #password
+{
+  border: solid 1px black;
+  background: #444;
+  color: #BFD1E0;
+  width: 80px;
+  height: 16px;
+  vertical-align: middle;
+  border: solid 1px #555;
+}
+.HeaderLoginForm #login
+{
+  background: #777;
+  color: #ddd;
+  border: solid 1px #555;
+  width: 50px;
+  height: 20px;
+  vertical-align: middle;
+  padding: 0 3px 2px 3px;
+  cursor: pointer;
+
+}
+.HeaderLoginForm #username:HOVER, .HeaderLoginForm #password:HOVER
+{
+  border: solid 1px #999;
+}
+.HeaderLoginForm #login:HOVER
+{
+  background: #999;	
+}
+#headerLogo
+{
+	position: absolute;
+	top: 0px;
+	left: 800px;
+	width: 130px;
+	height: 120px;
+}
+#headerLogoR, #headerLogoG, #headerLogoB
+{
+	position: absolute; 
+	top: 0;
+	left: 0;
+	width: 130px;
+	height: 120px;	
+}
+#headerLogoG, #headerLogoB
+{
+	display: none;
+}
+
+#headerLogoR {background: transparent url(images/logoR.png) no-repeat 0 0;}
+#headerLogoG {background: transparent url(images/logoG.png) no-repeat 0 0;}
+#headerLogoB {background: transparent url(images/logoB.png) no-repeat 0 0;}
+
+.navBar{
+	padding: 3px;
+	width: 720px;
+	position: absolute;
+	left: =10px;
+	top: 87px;
+	height: 25px;
+	color: #BFD1E0;
+}
+
+.navItem{
+	cursor: pointer;
+	color: #89955B;
+	text-decoration: none;
+}
+	
+.navItem:HOVER{
+	color: #BFD1E0;
+	text-decoration: none;
+}
+
+.mainContent
+{background: white;}
+
+.loginBox
+{
+  border: solid 1px black;
+  text-align: center;
+  padding: 5px;
+}
+
+a{
+	color: #3891D9;
+}
+a:HOVER
+{
+	color: #9BB2C4;
+}
+
+h1
+{
+  font-size: 20px;
+  color: #333;
+  font-weight: normal;
+}
+
+
+h2
+{
+  font-size: 14px;
+  border-bottom: solid 1px #555;
+  padding: 3px;
+  font-weight: normal;
+}
+
+table.normal
+{
+	text-align: center;
+}
+
+table.normal td
+{
+padding: 3px;
+margin: 0;
+border: solid 1px #ccc;
+border-collapse: collapse;	
+}

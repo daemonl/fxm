@@ -1,0 +1,228 @@
+_RBV_home:
+    pattern:  /
+    defaults: { _controller: RebaseBigvBundle:Default:index }
+    
+    
+_RBV_league_index:
+    pattern: /league/{leagueID}
+    defaults: { _controller: RebaseBigvBundle:League:index }
+    requirements:
+      leagueID: \d+
+
+_RBV_league_create:
+    pattern: /league/new
+    defaults: { _controller: RebaseBigvBundle:League:create }
+
+_RBV_season_create:
+    pattern: /season/new
+    defaults: { _controller: RebaseBigvBundle:League:editSeason, seasonID: 0 }
+    
+_RBV_season_edit:
+    pattern: /season/{seasonID}/edit
+    defaults: { _controller: RebaseBigvBundle:League:editSeason }
+    requirements:
+      seasonID: \d+
+    
+_RBV_season_index:
+    pattern: /season/{seasonID}
+    defaults: { _controller: RebaseBigvBundle:League:seasonIndex }
+    
+_RBV_settings_index:
+    pattern: /settings
+    defaults: { _controller: RebaseBigvBundle:Settings:index }
+
+_RBV_settings_rounds:
+    pattern: /settings/rounds
+    defaults: { _controller: RebaseBigvBundle:Settings:rounds }
+
+_RBV_settings_rounds_ajax:
+    pattern: /settings/rounds/ajax
+    defaults: { _controller: RebaseBigvBundle:Settings:roundsAjax }
+
+_RBV_venue_index:
+    pattern: /venue
+    defaults: { _controller: RebaseBigvBundle:Venue:index }
+
+_RBV_venue_create:
+    pattern:  /venue/create
+    defaults: { _controller: RebaseBigvBundle:Venue:create }
+    
+_RBV_venue_home:
+    pattern: /venue/{venue}
+    defaults: { _controller: RebaseBigvBundle:Venue:home }
+    requirements:
+      venue: \d+
+
+_RBV_venue_info:
+    pattern:  /venue/{venue}/info
+    defaults: { _controller: RebaseBigvBundle:Venue:info }
+    requirements:
+      venue: \d+
+
+_RBV_venue_slots:
+    pattern: /venue/{venue}/slots
+    defaults: { _controller: RebaseBigvBundle:Venue:slots }
+    requirements:
+      venue: \d+
+
+_RBV_venue_slots_ajax:
+    pattern: /venue/{venue}/slots/ajax
+    defaults: { _controller: RebaseBigvBundle:Venue:slotsAjax }
+    requirements:
+      venue: \d+
+
+_RBV_venue_slots_ajax_delete:
+    pattern: /venue/{venue}/slots/ajaxDelete
+    defaults: { _controller: RebaseBigvBundle:Venue:slotsAjaxDelete }
+    requirements:
+      venue: \d+
+
+_RBV_division_index:
+    pattern: /division
+    defaults: { _controller: RebaseBigvBundle:Division:index }
+
+_RBV_division_create:
+    pattern: /division/create
+    defaults: { _controller: RebaseBigvBundle:Division:create }
+
+_RBV_division_delete:
+    pattern: /division/{divisionID}/delete
+    defaults: { _controller: RebaseBigvBundle:Division:delete }
+
+_RBV_division_edit:
+    pattern: /division/{divisionID}/edit
+    defaults: { _controller: RebaseBigvBundle:Division:edit }
+
+_RBV_club_index:
+    pattern: /club
+    defaults: { _controller: RebaseBigvBundle:Club:index }
+    
+_RBV_club_create:
+    pattern: /club/new
+    defaults: { _controller: RebaseBigvBundle:Club:edit, clubID: 0 }
+    
+_RBV_club_edit:
+    pattern: /club/{clubID}/edit
+    defaults: { _controller: RebaseBigvBundle:Club:edit }
+    requirements:
+      venue: \d+
+      
+_RBV_club_addVenueToTeam:
+    pattern: /club/{clubID}/AddVenueToTeam/{teamID}
+    defaults: { _controller: RebaseBigvBundle:Club:AddVenueToTeam }
+    
+_RBV_club_removeVenueFromTeam:
+    pattern: /club/{clubID}/RemoveVenueFromTeam/{linkID}
+    defaults: { _controller: RebaseBigvBundle:Club:RemoveVenueFromTeam }
+    
+_RBV_club_home:
+    pattern: /club/{clubID}
+    defaults: { _controller: RebaseBigvBundle:Club:home }
+    requirements:
+      venue: \d+
+ 
+
+
+_RBV_club_addTeam:
+    pattern: /club/{clubID}/addTeam/{divisionID}
+    defaults: { _controller: RebaseBigvBundle:Club:addTeam }
+      
+_RBV_club_removeTeam:
+    pattern: /club/{clubID}/removeTeam/{teamID}
+    defaults: { _controller: RebaseBigvBundle:Club:removeTeam }
+    
+_RBV_game_delete:
+    pattern: /game/delete
+    defaults: { _controller: RebaseBigvBundle:Game:delete }
+
+_RBV_game_do:
+    pattern: /game/do
+    defaults: { _controller: RebaseBigvBundle:Game:do }
+    
+_RBV_game_setSlot:
+    pattern: /game/setslot
+    defaults: { _controller: RebaseBigvBundle:Game:setSlot }
+
+_RBV_game_BASE:
+    pattern: /game/
+    defaults: { _controller: RebaseBigvBundle:Default:index }
+
+_RBV_game_frame:
+    pattern: /game/{gameID}/frame
+    defaults: { _controller: RebaseBigvBundle:Game:frame }
+
+_RBV_matrix_index:
+    pattern: /matrix
+    defaults: { _controller: RebaseBigvBundle:Matrix:index }
+
+_RBV_matrix_show:
+    pattern: /matrix/{divisionName}
+    defaults: { _controller: RebaseBigvBundle:Matrix:view }
+    
+_RBV_dayview_index:
+    pattern: /dayview/index
+    defaults: { _controller: RebaseBigvBundle:DayView:index }
+    
+_RBV_dayview_byround:
+    pattern: /dayview/round/{roundID}
+    defaults: { _controller: RebaseBigvBundle:DayView:byround }
+    requirements:
+      round: \d+
+
+_RBV_dayview_byvenue:
+    pattern: /dayview/venue/{venueID}
+    defaults: { _controller: RebaseBigvBundle:DayView:byvenue }
+    requirements:
+      venue: \d+    
+
+_RBV_export_index:
+    pattern: /export/
+    defaults: { _controller: RebaseBigvBundle:Export:index }
+
+_RBV_export_excel:
+    pattern: /export/excel
+    defaults: { _controller: RebaseBigvBundle:Export:excel }
+
+_RBV_export_all:
+    pattern: /export/all
+    defaults: { _controller: RebaseBigvBundle:Export:all }
+
+_RBV_export_byclub:
+    pattern: /export/club/{clubID}
+    defaults: { _controller: RebaseBigvBundle:Export:ByClub }
+    requirements:
+      clubID: \d+ 
+
+_RBV_export_byteam:
+    pattern: /export/team/{teamID}
+    defaults: { _controller: RebaseBigvBundle:Export:ByTeam }
+    requirements:
+      teamID: \d+ 
+
+_RBV_export_bydivision:
+    pattern: /export/division/{divisionID}
+    defaults: { _controller: RebaseBigvBundle:Export:ByDivision }
+    requirements:
+      divisionID: \d+ 
+
+_RBV_export_byvenue:
+    pattern: /export/venue/{venueID}
+    defaults: { _controller: RebaseBigvBundle:Export:ByVenue }
+    requirements:
+      venueID: \d+
+
+_RBV_sql_index:
+    pattern: /sql/
+    defaults: { _controller: RebaseBigvBundle:SqlDump:index }
+
+_RBV_sql_dump:
+    pattern: /sql/dump
+    defaults: { _controller: RebaseBigvBundle:SqlDump:dump }
+
+_RBV_sql_read:
+    pattern: /sql/read/{filename}
+    defaults: { _controller: RebaseBigvBundle:SqlDump:read }
+    
+_RBV_warnings_all:
+    pattern: /warnings/all
+    defaults: { _controller: RebaseBigvBundle:Warning:all }

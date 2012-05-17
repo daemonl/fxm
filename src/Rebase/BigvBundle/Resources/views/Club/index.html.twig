@@ -1,0 +1,25 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block top %}
+  
+<div class="grid_6"><a href="{{path('_RBV_home')}}">Home</a> > Clubs</div>
+<div class="grid_6">Showing All Clubs</div>
+{% endblock %}
+
+{% block main %}
+<h1>Clubs</h1>
+{% for club in clubs %}
+
+<div class="grid_5 bordered">
+  <p><strong>{{club.getName()}}</strong></p>
+  <p>
+    <a href="{{ path('_RBV_club_home', { 'clubID': club.getID()}) }}">Teams</a> | 
+	<a href="{{ path('_RBV_club_edit', { 'clubID': club.getID()}) }}">Edit</a>
+  </p>
+</div>
+
+{% endfor %}
+<div class="grid_5 bordered">
+<a href="{{ path('_RBV_club_create') }}">Create New Club</a>
+</div>
+{% endblock %}

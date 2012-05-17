@@ -1,0 +1,7 @@
+parameters:
+#    rebase_main.example.class: Rebase\MainBundle\Example
+
+services:
+#    rebase_main.example:
+#        class: %rebase_main.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

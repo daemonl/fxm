@@ -1,0 +1,38 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block endHead %}
+<style type="text/css">
+
+
+
+</style>
+{% endblock %}
+
+{% block top %}
+  <div class="grid_5">
+    <a href="{{path('_RBV_home')}}">Home</a> > SQL
+  </div>
+  <div class="grid_5">
+    <p>Displaying All Venues</p>
+  </div>
+{% endblock %}
+
+{% block main %}
+
+<div class="Container">
+    {% for backup in backups %}
+		<div class="bordered Item" parent="bv_{{backup.Parent}}.sql" fname="{{backup.Filename}}" >
+			 {{backup.Label}} <a href="{{ path('_RBV_sql_read', {'filename': backup.Filename}) }}">RESTORE<a/> <strong>{{backup.Name}}</strong>
+		</div>
+	{% else %}
+		<div class="grid_5 bordered"><p>There are no backups in the system yet.</p></div>
+	{% endfor %}
+</div>	
+	<div class="grid_16">
+	<form method="post" action="{{ path('_RBV_sql_dump')}}">
+	Name: <input type="text" id="name" name="name" /> 
+	<input type="submit" value="Add Backup" />
+	</form>
+	</div>
+
+{% endblock %}

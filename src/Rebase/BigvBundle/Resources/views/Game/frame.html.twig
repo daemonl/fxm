@@ -1,0 +1,25 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block endHead %}
+<style type="text/css">
+.sf-toolbarreset {display: none;}
+body {background: #fff;}
+</style>
+{% endblock %}
+
+{% block body %} 
+<div class="grid_16">
+ {{game.getHomeTeam.getClub.getName}} v {{game.getAwayTeam.getClub.getName}}<br/>
+ {{game.getFriendlyDate}} ({% if game.getSlot %}{{game.getSlot.getID}}{% endif %})
+ <form action="{{ path('_RBV_game_frame', { 'gameID': game.getID()}) }}" method="post" {{ form_enctype(form) }}>
+  {{ form_errors(form) }}
+	{{form_widget(form.venue) }}<input type="submit" value="Update"/>
+	</table>
+	{{ form_rest(form) }}
+</form>
+<strong>on This Day:</strong><br/>
+{% for game in othergames %}
+{{game.getHomeTeam.getClub.getName}} v {{game.getAwayTeam.getClub.getName}} - {{game.getHomeTeam.getDivision.getName}}<br/>
+{% endfor %}
+</div>
+{% endblock %}

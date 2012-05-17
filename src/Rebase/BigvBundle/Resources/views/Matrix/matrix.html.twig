@@ -1,0 +1,308 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block top %}<div class="grid_8"> <a href="{{path('_RBV_home')}}">Home</a> > <a href="{{path('_RBV_matrix_index')}}">Matrix</a>  > {{division.getName}} </div> {% endblock %}
+
+{% block warnings %}
+<div class="Warnings">
+</div>
+<script type='text/javascript'>
+$(document).ready(function(){
+    UpdateWarnings();
+});
+
+    function UpdateWarnings()
+    {
+      $.getJSON("{{ path('_RBV_warnings_all') }}", function(data, Status, jqXHR){
+	
+            $(".Warnings").html('');
+            for(w in data)
+            {
+                $(".Warnings").append(w.Desc);
+            }
+              
+	});	
+        //setTimeout(UpdateWarnings(), 10000);
+    }
+</script>
+{% endblock %}
+
+{% block endHead %}
+  <style type="text/css">
+  
+  table.MATRIX td {border: solid 1px #999; text-align: center;}
+  .TeamName {}    
+  .DayTitle{  font-size: 10px;}
+  
+  .TeamDay {min-height: 18px; width: 50px; list-style: none; margin: 3px; border: solid 1px #666; border-radius: 12px;}
+
+  .game { cursor: pointer; border: none; border-radius: 10px; text-align: center;  padding: 0; margin: 2px;}
+
+  .potentialgames {border: none;}
+	
+  .DELETE {background: #f00; color: #fff; border: none; text-align: center; height: 18px;}
+	
+  .LBLroundNumber {float: right; background: #eeeeff;}
+   
+  td { vertical-align: top;}
+
+  table.MATRIX tr.RoundTitle td {font-size: 10px; text-align: center; background: #ccc;}
+
+  .GameStat {position: fixed; left: 863px; top: 51px; box-shadow: 2px 2px 2px #666; border: solid 1px black; border-radius: 8px; background: #fff;}
+  .GameStat h1 {cursor: pointer; margin-bottom: 0;}
+  .GameStat iframe {width: 300px; height: 200px; margin-bottom: 10px;}
+  .OpenGames {font-size: 10px; margin: 3px; padding: 2px; display: block;}
+  .OpenGames:HOVER {background: #9DFCFB;}
+  .RGSTeam {position: fixed; border: solid 1px black; box-shadow: 2px 2px 2px #666; border-radius: 8px; background: #fff; display: none; text-align: center;}
+  .RGSTeam h1 {cursor: pointer;}
+  .close {float: right; height: 15px; width: 15px; font-size: 12px; border: solid 1px #fff; border-radius: 7px; text-align: center; cursor: pointer;}
+  .close:HOVER {background: #f00;}
+  .ui-state-active {border: solid 1px red;}
+  
+  </style> 
+  <script type="text/javascript"> 
+  
+  var teams;
+  
+  function WriteGame(GameID, HomeTeam, AwayTeam, Date)
+  {
+    $(".TeamDay[team='"+HomeTeam+"'][rawday='"+Date+"']").append('<li class="game realgame homegame" gameid="'+GameID+'" hometeam="'+HomeTeam+'" awayteam="'+AwayTeam+'">'+teams[AwayTeam]+'</li>');
+	$(".TeamDay[team='"+AwayTeam+"'][rawday='"+Date+"']").append('<li class="game realgame awaygame" gameid="'+GameID+'" hometeam="'+HomeTeam+'" awayteam="'+AwayTeam+'">'+teams[HomeTeam]+'</li>');
+  }
+  
+    $(document).ready(function(e) {
+  	teams = new Array();
+	{% for team in matrix.Teams %}
+		teams[{{team.TeamID}}] = "{{team.ShortName}}";
+    {% endfor %}
+
+var GG;
+var Group;
+    {% for game in matrix.ExistingGames %}
+  		WriteGame({{game.gameID}}, {{game.HomeTeam.TeamID}}, {{game.AwayTeam.TeamID}}, "{{game.day}}");
+		
+		GG = $(".RGSTeam[team={{game.HomeTeam.TeamID}}] .game[hometeam={{game.HomeTeam.TeamID}}][awayteam={{game.AwayTeam.TeamID}}]").first()
+		Group = $(GG).parent().parent().parent().attr("group");
+		switch($(GG).attr('requiredlev'))
+		  	{
+				case '1':
+			  	  $(".RGSSet[group='"+Group+"'] .game[hometeam='{{game.HomeTeam.TeamID}}'][awayteam='{{game.AwayTeam.TeamID}}']").remove();
+			  	  $(".RGSSet[group='"+Group+"'] .game[hometeam='{{game.AwayTeam.TeamID}}'][awayteam='{{game.HomeTeam.TeamID}}']").remove();
+				break;
+				case '2':
+				  $(".RGSSet[group='"+Group+"'] .game[hometeam='{{game.HomeTeam.TeamID}}'][awayteam='{{game.AwayTeam.TeamID}}']").remove();
+				break;
+			}
+    {% endfor %}
+  
+  	$(".GameStat").draggable();
+    $(".RGSTeam").draggable();
+	
+    $(".close").click(function(){
+      $(this).parent().parent().hide();  
+    });
+	
+	$(".OpenGames").click(function(e){
+    
+      var RGS = $(".RGSTeam[team="+$(this).attr('team')+"]");
+      $(RGS).show();
+      $(RGS).offset({ top: e.pageY, left: e.pageX})
+    });
+	
+   $(".game").click(function(e){
+    $(".GameStat iframe").attr("src", "{{path('_RBV_game_BASE')}}"+ $(this).attr('gameid') +"/frame");
+    $(".GameStat").show();
+   });
+  
+  $(".game").draggable({ revert: "invalid" });
+  
+  $(".TeamDay").droppable({
+  	accept: ".game",
+	hoverClass: "ui-state-active",
+	over: function(event, ui) { 
+				var D = $(this).attr("rawday");
+			    var T1 = $(this).attr("team");
+				var T2 = -1;
+				var tH = $(ui.draggable).attr("hometeam");
+				var tA = $(ui.draggable).attr("awayteam");
+				if (T1 == tH)
+				{
+					T2 = tA;
+				}
+				if (T1 == tA)
+				{
+					T2 = tH;
+				}
+				if (T2 != -1)
+				{
+				$(".CounterTeamDayHome").removeClass("CounterTeamDayHome");
+				$(".CounterTeamDayAway").removeClass("CounterTeamDayAway");
+					$(".TeamDay[team='" + tH + "'][rawday='" + D + "']").addClass("CounterTeamDayHome");
+					$(".TeamDay[team='" + tA + "'][rawday='" + D + "']").addClass("CounterTeamDayAway");
+				}
+			},
+	drop: function (event, ui){
+		$(".CounterTeamDayHome").removeClass("CounterTeamDayHome");
+		$(".CounterTeamDayAway").removeClass("CounterTeamDayAway");
+		UpdateElement(this, ui.draggable, $(ui.draggable).parent())
+	}
+   });
+   });
+   
+   function UpdateElement(slot, game, oldslot)
+   {
+		
+		if ($(slot).hasClass("DELETE"))
+		{
+		  	  var gameIDs = $(game).attr("gameid");
+		   	  $(".game[gameid='"+gameIDs+"']").remove();
+			  $.ajax("{{ path('_RBV_game_delete') }}", {
+						type: "POST",
+						dataType: 'json',
+						data: {ID: gameIDs},
+						success: function(data){
+              javascript:location.reload(true);
+
+							  }});		
+		  
+			return;		
+		}
+
+   		var D = $(slot).attr("rawday");
+		var T1 = $(slot).attr("team");
+		var T2 = -1;
+		var tH = $(game).attr("hometeam");
+		var tA = $(game).attr("awayteam");
+		if (T1 == tH)
+		{
+		  T2 = tA;
+		}
+		if (T1 == tA)
+		{
+		  T2 = tH;
+		}
+		if (T2 == -1)
+		{
+		  $(oldslot).sortable('cancel');
+		}else
+		{
+		
+		  var TDH = $(".TeamDay[team='" + tH + "'][rawday='" + D + "']");
+		  var TDA = $(".TeamDay[team='" + tA + "'][rawday='" + D + "']");
+					
+		  var avalibility = $(TDA).attr("avalibility");
+					
+		  var gameID = $(game).attr("gameid"); 					
+		  if (gameID == "NEW")
+		  {
+		  	switch($(game).attr('requiredlev'))
+		  	{
+				case '1':
+				  var Group = $(oldslot).parent().parent().attr("group");
+			  	  $(".RGSSet[group='"+Group+"'] .game[hometeam='"+tH+"'][awayteam='"+tA+"']").remove();
+			  	  $(".RGSSet[group='"+Group+"'] .game[hometeam='"+tA+"'][awayteam='"+tH+"']").remove();
+				break;
+				case '2':
+				  var Group = $(oldslot).parent().parent().attr("group");
+			  	  $(".RGSSet[group='"+Group+"'] .game[hometeam='"+tH+"'][awayteam='"+tA+"']").remove();
+				break;
+			}
+			$(game).remove();
+		  }else{
+		    $(".game[gameid='"+gameID+"']").remove();
+		  }
+	
+		  $.ajax("{{ path('_RBV_game_do') }}", {
+						type: "POST",
+						dataType: 'json',
+						data: {ID: gameID, HomeTeam: tH, AwayTeam: tA, Date: D, Slot: 'AUTO'},
+						success: function(data){
+						  WriteGame(data.GameID, data.HomeTeam, data.AwayTeam, data.date);
+              $(".game").click(function(e){
+                $(".GameStat iframe").attr("src", "{{path('_RBV_game_BASE')}}"+ $(this).attr('gameid') +"/frame");
+              });
+			  $(".game").draggable();
+			  
+					  }});
+					       }
+   }
+   </script>
+{% endblock %}
+
+{% block main %}
+   
+<div class="grid_16">
+<table class="MATRIX">
+  <tr>
+  <td colspan=2><ul class="TeamDay DELETE">DEL</ul></td>
+  {% for team in matrix.Teams %}
+  <td class="TeamName">{{team.ShortName}}<div class="btn2 OpenGames" team="{{team.TeamID}}">Games</div></td>
+  {% endfor %}
+  </tr>
+  
+  {% for round in matrix.Rounds %}
+    <tr class="RoundTitle" >
+      <td colspan="{{ matrix.GetColCount}}">Round {{round.RoundNumber}}</td>
+	</tr>
+    {% for day in round.Days %}
+
+	<tr>
+	  <td></td>
+	  <td class="DayTitle">{{day.WeekDay}}<br/>{{day.ShortDay}}</td>
+	  {% for teamday in day.Teams %}
+	    <td class="TeamDayTD">
+		  	<ul class="TeamDay want{{teamday.Priority}}" slot="{{teamday.NextSlot}}" rawday="{{day.RawDay}}" team="{{teamday.Team.TeamID}}" avalibility="{{teamday.Priority}}">
+			
+			</ul>
+		</td>
+	  {% endfor %}
+    </tr>
+    {% endfor %}
+  {% endfor %}
+    <tr>
+  <td colspan=2><ul class="TeamDay DELETE">DEL</ul></td>
+  {% for team in matrix.Teams %}
+  <td class="TeamName">{{team.ShortName}}<div class="btn2 OpenGames" team="{{team.TeamID}}">Games</div></td>
+  {% endfor %}
+  </tr>
+</table>
+   <div class="GameStat">
+<h1>Game Stat <div class="close">X</div></h1>
+  <iframe scrolling="no" src="{{path('_RBV_game_frame', { 'gameID': 66})}}"></iframe>
+</div>
+</div>
+   <div class="clear"></div>
+
+   <div class="RGS">
+   
+   {% for T in matrix.Teams %}
+     <div class="RGSTeam" team="{{T.TeamID}}">
+       <h1>{{T.ShortName}}<div class="close">X</div></h1>
+     {% for GS in T.RequiredGames %}
+        <div class="RGSSet" group='{{GS.SetNum}}'>
+		  <div>Set {{GS.SetNum}}. {{GS.RequiredString}}</div>
+          <div style="float: left;">
+          <ul class="TeamDay RGSHomes">
+            {% for game in GS.HomeGames %}
+             <li class="game potentialgame homegame required{{GS.RequiredNum}}" requiredlev="{{GS.RequiredNum}}" gameid="NEW" hometeam="{{game.HomeTeam.TeamID}}" awayteam="{{game.AwayTeam.TeamID}}">{{game.AwayTeam.ShortName}}</li>
+            {% endfor %}
+          </ul>
+          </div>
+          <div style="float: left;">
+          <ul class="TeamDay RGSAways">
+          {% for game in GS.AwayGames %}
+            <li class="game potentialgame awaygame required{{GS.RequiredNum}}" requiredlev="{{GS.RequiredNum}}" gameid="NEW" hometeam="{{game.HomeTeam.TeamID}}" awayteam="{{game.AwayTeam.TeamID}}">{{game.HomeTeam.ShortName}}</li>
+          {% endfor %}
+            </ul>
+          </div>
+		</div>
+        <div class="clear"></div>
+     {% endfor %}
+        <div class="clear"></div>
+     </div>
+   {% endfor %}
+     
+   
+   </div>
+
+
+{% endblock %}

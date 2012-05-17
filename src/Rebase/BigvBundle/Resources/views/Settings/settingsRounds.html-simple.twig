@@ -1,0 +1,48 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block endHead %}
+
+{% endblock %}
+
+{% block top %}
+  <div class="grid_5">
+    <p><a href="{{ path('_RBV_settings_index') }}">Settings</a> > Rounds</p>
+  </div>
+  <div class="grid_5">
+    
+  </div>
+{% endblock %}
+
+{% block main %}
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#addRound").click(function(){
+      $("#Rounds tr:last").after("<tr class='ROUNDROW'><td>1</td><td><input class='datepicker' type='text' /></td><td><input class='datepicker' type='text' /></td></tr>");
+      $(".datepicker").datepicker();
+      var R = 1;
+      $(".ROUNDROW").each(function(){
+        $(this).children("td:first").html(R);
+        R++;
+      });
+    });
+  });
+</script>
+
+<table class="table" id="Rounds">
+  <tr>
+    <th>Round</th>
+    <th>Start</th>
+    <th>End</th>
+  </tr>
+  {% for round in rounds %}
+    <tr>
+      <td>{{round.number}}</td>
+      <td>{{round.start.format("d M y")}}</td>
+      <td>{{round.stop.format("d M y")}}</td>
+    </tr>
+  {% endfor %}
+</table>
+      <a class="btn" id="addRound" href="#">Add Round</a>
+{% endblock %}
+

@@ -1,0 +1,4 @@
+Rebase\BigvBundle\Entity\Venue:
+    properties:
+        name:
+            - NotBlank: ~

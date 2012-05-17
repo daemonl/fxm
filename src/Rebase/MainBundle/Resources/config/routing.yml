@@ -1,0 +1,3 @@
+RebaseMainBundle_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: RebaseMainBundle:Default:index }

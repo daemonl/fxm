@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+  		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    	<meta name="viewport" content="width=1024" />
+  		<meta name="google-site-verification" content="FANwH4fEGHDChcj1uyWXV67LzU_YEQbgBo9K9HlXKOA" />
+        
+        <link rel="stylesheet" href="{{ asset('css/reset.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" href="{{ asset('css/960.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" href="{{ asset('css/text.css') }}" type="text/css" media="all" />
+        <link rel="stylesheet" href="{{ asset('css/ltrn.css') }}" type="text/css" media="all" />
+        
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{{ asset('js/jquery.watermark.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/rebase.js') }}"></script>
+        
+        <title>{% block title %}Digital Rebase{% endblock %}</title>
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+    
+    
+     <div class="container_12 header">
+		<div class="grid_6" style="padding-bottom: 20px;">
+		<h1 style="display: none;">Digital Rebase</h1>
+     	<h1 style="display: none;">Lift the Baseline</h1>
+    </div>
+    <div id="headerLogo">
+    	<div id="headerLogoR">&nbsp;</div>
+    	<div id="headerLogoG">&nbsp;</div>
+    	<div id="headerLogoB">&nbsp;</div>
+    </div>
+        <div class="grid_4" style="padding-top: 10px; color: #fff;">
+        {% if is_granted('ROLE_USER') %}
+    		<a href="{{ path('logout') }}">Log Out</a>
+		{% else %}
+          <form class="HeaderLoginForm" action="{{ path('login_check') }}" method="post">
+    		<input type="text" id="username" name="_username" />
+    		<input type="password" id="password" name="_password" />
+    		{#
+        		If you want to control the URL the user is redirected to on success (more details below)
+        		<input type="hidden" name="_target_path" value="/account" />
+    		#}
+    		<input type="submit" id="login" name="login" value="login"/>
+			</form>
+		{% endif %}
+        </div>
+        <div class="clear"></div>
+    	<div class="grid_9">
+        	<div class="navBar">
+      			<a href="{{ path('_page', { 'page': 'index' })}}" class="navItem">Home</a> | 
+                <a href="{{ path('_page', { 'page': 'services' })}}" class="navItem">Managed Services</a> | 
+				<a href="{{ path('_page', { 'page': 'marketing' })}}" class="navItem">Digital Marketing</a> | 
+                <a href="{{ path('_page', { 'page': 'software' })}}" class="navItem">Cloud Software</a> | 
+                <a href="{{ path('_page', { 'page': 'contact' })}}" class="navItem">Contact</a>
+       		 	<div class="clear"></div>
+             </div>
+      	</div>
+      	<div class="clear"></div>
+      	<div class="grid_12"> </div>
+      	<!--[if lt IE 7]> <div style='clear: both; height: 59px; padding:0 0 0 15px; position: relative;'> <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode"><img src="http://www.theie6countdown.com/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." /></a></div> <![endif]-->
+      	<div class="clear" style="height: 10px;"></div>
+
+       </div>
+    <div class="clear" style="height: 10px;"></div>
+    <div class="container_12 mainContent">
+      <div class="clear" style="height: 10px;"></div>
+          <!-- Content -->
+           {% block content %}
+           {% endblock %}
+          <!-- END Content -->
+      <div class="clear"></div>
+                {% if code is defined %}
+                <h2>Code behind this page</h2>
+                <div class="symfony-content">{{ code|raw }}</div>
+            {% endif %}
+    </div>
+    
+    
+
+
+    </body>
+</html>

@@ -1,0 +1,43 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block top %} <div class="grid_5"> <a href="{{path('_RBV_home')}}">Home</a> >  Export  </div> {% endblock %}
+
+{% block main %}
+<h1>Simple View</h1>
+  <div class="grid_2 bordered">
+  {% for division in divisions %}
+	  <a href="{{ path('_RBV_export_bydivision', { 'divisionID': division.getID()}) }}">{{division.getName}}</a><br />
+  {% endfor %}
+  </div>
+  
+   <div class="grid_4 bordered">
+  {% for venue in venues %}
+	  <a href="{{ path('_RBV_export_byvenue', { 'venueID': venue.getID()}) }}">{{venue.getName}}</a><br />
+  {% endfor %}
+  </div>
+  
+  <div class="grid_6 bordered">
+  {% for club in clubs %}
+	  <a href="{{ path('_RBV_export_byclub', { 'clubID': club.getID()}) }}">{{club.getName}}</a> - 
+	  {% for team in club.getTeams %}
+	  	<a href="{{ path('_RBV_export_byteam', { 'teamID': team.getID()}) }}">{{team.getDivision.getName}}</a>
+	  {% endfor %}
+	  <br/>
+  {% endfor %}
+  </div>
+  <div class="clear"></div>
+<h1>Excel</h1>
+ <div class="bordered">
+ <form action="{{ path('_RBV_export_excel') }}" method="post">
+ <table class="tblH">
+ <tr><th>Author:</th><td><input type="text" id="Author" name="Author" value="BigV" /></td></tr>
+ <tr><th>Title:</th><td><input type="text" id="Author" name="Title" value="BigV Fixtures 2011" /></td></tr>
+ <tr><th></th><td><input type="submit" value="Download" /></td></tr>
+ </table>
+ </form>
+ </div>
+    <div class="clear"></div>
+<h1>Fiba</h1>
+
+  <div class="clear"></div>
+{% endblock %}

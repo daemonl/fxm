@@ -1,4 +1,17 @@
-# Internal routing configuration to handle ESI
-#_internal:
-#   resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
-#   prefix:   /_internal
+newuser:
+    pattern:   /fm/create
+    defaults:  { _controller: RebaseUserBundle:Security:create }
+
+login:
+    pattern:   /fm/login
+    defaults:  { _controller: RebaseUserBundle:Security:login }
+    
+login_check:
+    pattern:   /fm/login_check
+    
+logout:
+    pattern:   /fm/logout
+
+RebaseMainBundle:
+    resource: "@RebaseBigvBundle/Resources/config/routing.yml"
+    prefix:   /fm

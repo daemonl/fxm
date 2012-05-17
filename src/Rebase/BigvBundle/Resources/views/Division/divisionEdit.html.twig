@@ -1,0 +1,25 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block top %}
+ <div class="grid_8">
+    <a href="{{path('_RBV_home')}}">Home</a> > Divisions
+  </div>
+{% endblock %}
+
+{% block main %}
+<h1>Edit Division ({{division.getName}})</h1>
+ <div class="grid_16">
+ 
+ <form action="{{ path('_RBV_division_edit', { 'divisionID': division.getID()}) }}" method="post" {{ form_enctype(form) }}>
+    {{ form_errors(form) }}
+	<table class="Form">
+	  <tr><th>{{form_label(form.name) }}:</th><td>{{form_widget(form.name) }}</td>
+	  <tr><th>{{form_label(form.FullName) }}:</th><td>{{form_widget(form.FullName) }}</td>
+	  <tr><th>Games Per Team:</th><td>{{form_widget(form.GamesPerTeam) }}</td>
+	  <tr><td></td><td><input type="submit" value="Update"/></td></tr>
+	</table>
+	{{ form_rest(form) }}
+</form>
+
+ </div>
+{% endblock %}

@@ -1,0 +1,7 @@
+Rebase\UserBundle\Entity\User:
+    properties:
+        email:
+            - NotBlank: ~
+            - Email: ~
+        password:
+            - MinLength: { limit: 6, message: "Your password must have at least {{ limit }} characters." }

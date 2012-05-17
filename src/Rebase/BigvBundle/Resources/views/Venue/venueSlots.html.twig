@@ -1,0 +1,195 @@
+{% extends 'RebaseBigvBundle:Venue:venueBase.html.twig' %}
+
+{% block endHead %}
+  <style type="text/css">
+  
+  .SpaceCont {padding: 10px;}
+  .bWra {background: #777;  border: solid 1px #777; padding-bottom: 10px; border-radius: 10px; float: left;}
+	.bTitle {color: white; text-align: center; border-radius: 10px; font-weight: bold;}
+	.bSet {border: solid 1px #777; float: left; background: #DDD; width: 80px;}
+	.bSetTitle { text-align: center; border-bottom: solid 1px #777;}
+	.bCont {background: white; padding: 2px 0 2px 0; display: block; min-height: 100px; margin: 0;}
+	.bContDragOver {background: #F90;}
+	.bItem {border: solid 1px black; width: 60px; border-radius: 5px;  margin: 2px; cursor: pointer;  display: block;}
+	.bItemPlaceholder{ background: #9C9; display: block; height: 18px; margin: 2px;}
+	.bItem:HOVER {border: solid 1px #F00;}
+	
+	table.calendar td.day {border: solid 1px #999; width: 80px; vertical-align: top; background: #eee;}
+	.cal .days {background: #000; color: white; font-weight: bold; height: 20px;}
+	
+  
+	.want1 {background: #F90; }
+	.want2 {background: #FF3; }
+	.want3 {background: #0C6; }
+	
+	.LBLroundNumber {float: right; background: #eeeeff;}
+  
+  .roundHolder {min-height: 10px; width: 66px; background: white; border: solid 1px black; border-radius: 5px; }
+  </style>
+{% endblock %}
+
+{% block main %}
+
+ <script type="text/javascript">
+  $(document).ready(function(e) {
+  
+  		$(window).scroll(function () {
+
+               if ($("#topHolder").position().top < $(window).scrollTop()) {
+
+                   $("#topStuff").css("position", "fixed");
+
+                   $("#topStuff").css("z-index", "2");
+
+               } else {
+
+                   $("#topStuff").css("position", "relative");
+
+                   $("#topStuff").css("z-index", "0");
+
+                   $("#topStuff").css("top", "0");
+
+               }
+
+           });
+
+	  
+	  {% for round in rounds %}
+	  {% for day in round.getDays %}
+	  $(".day[rawday='{{ day }}']").children(".dayLabel").append("<div class='LBLroundNumber'>{{round.getNumber}}</div>");
+	  $(".day[rawday='{{ day }}']").attr("defaultround", "{{round.getId}}");
+      $(".day[rawday='{{ day }}']").append("<ul class='roundHolder'></ul>");
+	  {% endfor %}
+	  {% endfor %}
+	  
+	  //FOR SLOT IN SLOTS
+ 	  {% for slot in slots %}
+	    $(".day[rawday='{{slot.getShortDate()}}']").children(".roundHolder").append("<li class='bItem want{{ slot.getPriority }}' slotid='{{slot.id}}' PrefLevel='{{ slot.getPriority }}' round='{{slot.getRound.getId}}'>Round {{ slot.getRound.getNumber }}</li>")
+	  {% endfor %}
+
+	$(".roundHolder").sortable({
+			connectWith: ".roundHolder" ,
+			placeholder: "bItemPlaceholder",
+			helper: 'clone',
+			update: function(event, ui) { 
+			  var C = 0;
+			  $(this).children(".bItem").each(function(index, element){
+					UpdateElement(this);
+			   });
+				
+			 }
+			}).disableSelection();
+			ReSetMenu();
+	});
+	
+	function UpdateElement(ele)
+	{
+		
+		if ($(ele).attr("day") != $(ele).parent().parent().attr("rawday"))
+		{
+		  if ($(ele).parent().parent().attr("rawday") == "NONE")
+		  {
+		    SQLDelete(ele);
+			
+		    return;
+		  }
+			$(ele).attr("round", $(ele).parent().parent().attr("defaultround"));
+			$(ele).html("Updating");
+			$(ele).attr("day", $(ele).parent().parent().attr("rawday"));
+			if ($(ele).attr("slotid") == undefined)
+			{
+				var d = new Date();
+				$(ele).attr("slotid", "NEW" + d.getTime());
+				ReSetMenu();
+			}
+			SQLUpdate(ele);
+		}
+	}
+	
+	function SQLUpdate(ele)
+	{
+		var id = $(ele).attr("slotid");
+		var day = $(ele).attr("day");
+		var lev = $(ele).attr("PrefLevel");
+		var roundVal = $(ele).attr("round");
+		
+		$.ajax("{{ path('_RBV_venue_slots_ajax', { 'venue': venue.getID()}) }}", {
+		type: "POST",
+		dataType: 'json',
+		data: {sID: id, sDay: day, sLev: lev, sRound: roundVal},
+		success: function(data){
+		
+			  $(".bItem[slotid='" + data[0] + "']").attr('slotid', data[1]).html("Round " + data[4]);
+			
+		}});
+		
+	}
+	function SQLDelete(ele)
+	{
+	
+		var id = $(ele).attr("slotid");
+		if (id != undefined)
+		{
+		  $.ajax("{{ path('_RBV_venue_slots_ajax_delete', { 'venue': venue.getID()}) }}", {
+		  type: "POST",
+		  dataType: 'json',
+		  data: {sID: id},
+		  success: function(data){
+		  	if (data[0] == "OK")
+			{
+				ReSetMenu();
+			}else{
+			  alert(data[1]);
+			  location.reload(true);
+
+			}
+			
+		  }});
+		}
+	}
+
+	function ReSetMenu()
+	{
+      $("#menu").html('<li class="bItem want1" PrefLevel="1">OK</li><li class="bItem want2" PrefLevel="2">Good</li><li class="bItem want3" PrefLevel="3">Great</li>');
+	}
+  </script>
+
+<h1>Game Time Slots for {{ venue.getName() }}</h1>
+ 
+
+<div class="grid_10">
+  <table class="calendar">
+    <tr>
+	  <th>Mon</th>
+	  <th>Tue</th>
+	  <th>Wed</th>
+	  <th>Thu</th>
+	  <th>Fri</th>
+	  <th>Sat</th>
+	  <th>Sun</th>
+	</tr>
+    {% for week in calendar.getWeeks() %}
+    <tr>
+		{% for day in week.getDays() %}
+		<td class="day" rawday="{{day.getRaw()}}" id="calDay_{{day.getRaw()}}">
+		  <div class="dayLabel">{{ day.getShort() }}</div>
+		  
+		</td> 
+		{% endfor %}
+	</tr>
+   {% endfor %}
+  </table>
+  </div>
+
+ 
+  <div class="grid_3" id="topHolder">
+	<div id="topStuff" rawday="NONE" style="width: 200px;">
+    <p>Drag these indicators into a date box to indicate an avaliable timeslot with the given preference. Each box will be able to hold one game later, and will have the same color as you pick now to let you know what the preference for that slot is.</p>
+	<div class="clear"  style="height: 30px"></div>
+       <ul class="roundHolder" id="menu">
+      
+      </ul>
+	  <div id="stat"></div>
+    </div>
+    </div>
+{% endblock %}
