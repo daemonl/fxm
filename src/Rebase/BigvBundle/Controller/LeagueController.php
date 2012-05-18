@@ -26,11 +26,23 @@ class LeagueController extends _ParentController
       return $this->render('RebaseBigvBundle:League:index.html.twig', array('league'=>$league));
     }
 
-    public function createAction(Request $request)
+    public function editAction(Request $request, $leagueID)
     {
 
-      $league = new League();
-      $league->setName("New League");
+      if ($leagueID == 0)
+      {
+        $league = new League();
+      }else{
+        $em = $this->getDoctrine()->getEntityManager();
+        $qb = $em->createQueryBuilder()
+                ->add('select', 'l')
+                ->add('from', 'RebaseBigvBundle:League l')
+                ->add('where', 'l.id = ?1')
+                ->setParameter(1, $leagueID);
+        $query = $qb->getQuery();
+        $league = $query->getSingleResult();
+      }
+      
 
 	    $form = $this->createFormBuilder($league)
          ->add('shortname')

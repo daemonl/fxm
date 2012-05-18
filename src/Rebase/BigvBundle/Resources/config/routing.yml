@@ -10,8 +10,12 @@ _RBV_league_index:
       leagueID: \d+
 
 _RBV_league_create:
-    pattern: /league/new
-    defaults: { _controller: RebaseBigvBundle:League:create }
+    pattern: /league/create
+    defaults: { _controller: RebaseBigvBundle:League:edit, leagueID: 0 }
+    
+_RBV_league_edit:
+    pattern: /league/{leagueID}/edit
+    defaults: { _controller: RebaseBigvBundle:League:edit }
 
 _RBV_season_create:
     pattern: /season/new
