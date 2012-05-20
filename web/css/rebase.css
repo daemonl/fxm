@@ -12,6 +12,14 @@ padding: 10px;}
 .ialistfooter {min-height: 30px; border: solid 1px #333; margin: 10px; background-color: #aaa;
 padding: 10px;}
 
+.formCollection-ul li{
+  list-style: none;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+
 /* UI Datepicker */
 
 

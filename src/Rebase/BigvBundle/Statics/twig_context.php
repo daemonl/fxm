@@ -7,13 +7,13 @@ class twig_context {
   public function League()
   {
 
-      return context::$league;
+      return Context::$league;
 
   }
     public function Season()
   {
 
-      return context::$season;
+      return Context::$season;
 
   }
 }

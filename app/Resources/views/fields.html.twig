@@ -226,16 +226,20 @@
         {% endif %}
         <div {{ block('widget_container_attributes') }}>
             {{ form_errors(form) }}
-            <ul class="formCollection-ul">
-            {% for rows in form %}
+                <ul class="formCollection-ul">
+        {% for rows in form %}
                 <li>
-                  {{ form_widget(rows, { 'attr': { 'style': 'float: left;' } }) }}
-                  <div style="float:left;">
-                      <a class="formCollection-remove" title="Remove" href="javascript:void()">
+                    <div class="fancy-info-box">
+                  <div style="float:right; height: 0;z-index: 1;position: relative;">
+                      <a class="formCollection-remove" title="Remove" href="#">
                         <span><i class="icon-remove"></i></span>
+
                       </a>
                   </div>
+                  {{ form_widget(rows, { 'attr': { 'style': 'float: left;' } }) }}
+
                   <div class="clear"></div>
+                  </div>
                 </li>
             {% endfor %}
             </ul>
@@ -243,9 +247,9 @@
         </div>
         <div class="clear"></div>
         <div>
-          <a class="formCollection-add" collectionId="{{ id }}" title="Add" href="#">
+          <a class="formCollection-add" collectionId="{{ id }}" title="Add" href="#bottom">
             <div style="display: none;"></div>
-            <span>Add New {{addLabel|default('')}}</span>
+            <span>Add New</span>
           </a>
         </div>
     </div>
@@ -256,22 +260,17 @@
 {% block collection_item_widget %}
 {% spaceless %}
     <li>
- {{ form_widget(prototype, { 'attr': { 'style': 'float: left;' } }) }}
-       <div style="float: left">
-         <a class="formCollection-remove" title="Remove" href="javascript:void()"><span><i class="icon-remove"></i></span></a>
-        </div>
-        <div class="clear"></div>
+    <div class="fancy-info-box" style="margin-top:10px;">     
+       <div style="float: right">
+         <a class="formCollection-remove" title="Remove" href="#"><span><i class="icon-remove"></i></span></a>
+       </div>
+      {{ form_widget(prototype, { 'attr': { 'style': 'float: left;' } }) }}
+       <div class="clear"></div>
+    </div>
     </li>
 {% endspaceless %}
 {% endblock collection_item_widget %}
 
-{% block duration_widget %}
-{% spaceless %}
-    <div class="input-append">
-    {{ block('field_widget') }}<span class="add-on">minutes</span>
-    </div>
-{% endspaceless %}
-{% endblock %}
     
 {% block money_widget %}
 {% spaceless %}

@@ -1,0 +1,18 @@
+{% extends 'RebaseBigvBundle:Venue:venueBase.html.twig' %}
+
+{% block main %}
+
+<script type="text/javascript" src="{{asset('js/basicFormCollection.js')}}"></script>
+
+<h1>Courts at {{venue.name}}</h1>
+ <form class="form-horizontal" method="post" {{ form_enctype(form) }}>
+    {{ form_errors(form) }}
+    {{ form_rest(form) }}
+  <div class="form-actions">   
+	  <input class="btn btn-primary" type="submit" value="Save"/>
+  </div>
+	</table>
+	
+</form>
+
+{% endblock %}

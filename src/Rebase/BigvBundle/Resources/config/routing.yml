@@ -43,25 +43,36 @@ _RBV_settings_rounds_ajax:
     pattern: /settings/rounds/ajax
     defaults: { _controller: RebaseBigvBundle:Settings:roundsAjax }
 
+
+#### VENUE ####
+
 _RBV_venue_index:
     pattern: /venue
     defaults: { _controller: RebaseBigvBundle:Venue:index }
 
 _RBV_venue_create:
     pattern:  /venue/create
-    defaults: { _controller: RebaseBigvBundle:Venue:create }
+    defaults: { _controller: RebaseBigvBundle:Venue:edit, venueID:0 }
     
+_RBV_venue_edit:
+    pattern:  /venue/{venueID}/edit
+    defaults: { _controller: RebaseBigvBundle:Venue:edit }
+    requirements:
+      venue: \d+  
+
 _RBV_venue_home:
-    pattern: /venue/{venue}
+    pattern: /venue/{venueID}
     defaults: { _controller: RebaseBigvBundle:Venue:home }
     requirements:
       venue: \d+
 
-_RBV_venue_info:
-    pattern:  /venue/{venue}/info
-    defaults: { _controller: RebaseBigvBundle:Venue:info }
+_RBV_venue_courts:
+    pattern: /venue/{venueID}/courts
+    defaults: { _controller: RebaseBigvBundle:Venue:courts }
     requirements:
       venue: \d+
+      
+
 
 _RBV_venue_slots:
     pattern: /venue/{venue}/slots

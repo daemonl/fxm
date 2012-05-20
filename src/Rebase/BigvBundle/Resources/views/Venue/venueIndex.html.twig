@@ -1,30 +1,26 @@
 {% extends 'RebaseBigvBundle::base.html.twig' %}
 
-{% block top %}
-  <div class="grid_5">
-    <a href="{{path('_RBV_home')}}">Home</a> > Venues
-  </div>
-  <div class="grid_5">
-    <p>Displaying All Venues</p>
-  </div>
+{% block breadcrumb %}
+      {{ parent() }}
+      <li>Venues</li>
 {% endblock %}
 
 {% block main %}
 
     {% for venue in venues %}
-		<div class="grid_5 bordered">
-		<p><strong>{{ venue.getName() }}</strong> ({{ venue.getId() }})
+		<div class="well">
+		<p><strong>{{ venue.getName() }}</strong> ({{ venue.courts|length }})
 		<p>
-		  <a href="{{ path('_RBV_venue_slots', { 'venue': venue.getID()}) }}">Avaliable Times</a> | 
-		  <a href="{{ path('_RBV_venue_info', { 'venue': venue.getID()}) }}">Edit</a>
+		  <a href="{{ path('_RBV_venue_courts', { 'venueID': venue.getID()}) }}">Courts</a> | 
+		  <a href="{{ path('_RBV_venue_home', { 'venueID': venue.getID()}) }}">Venue Details</a>
 		</p>
 		</div>
 	{% else %}
-		<div class="grid_5 bordered"><p>There are no venues in the system yet.</p></div>
+		<div class="bordered"><p>There are no venues in the system yet.</p></div>
 	{% endfor %}
 	
-	<div class="grid_16">
+
 	<a href="{{ path('_RBV_venue_create')}}">Add a new venue</a>
-	</div>
+
 
 {% endblock %}

@@ -96,6 +96,33 @@ class _ParentController extends Controller{
    }
     return $this->render('RebaseBigvBundle:Generic:form.html.twig', array('form'=>$form->createView(), 'pageTitle'=>$pageTitle, 'submitLabel'=>$submit));
   }
+  
+   function getOldForPersistCollection($old)
+  {
+    $arr = array();
+    foreach ($old as $o)
+    {
+      $arr[] = $o;
+    }
+    return $arr;
+  }
+  function getDeleteListForPersistCOllection($old, $new)
+  {
+    $em = $this->getDoctrine()->getEntityManager();
+     foreach ($new as $n)
+        {
+          foreach ($old as $key => $o)
+          {
+            if ($o->getId() === $n->getId())
+            {
+              unset($old[$key]);
+            }
+          }
+        }
+        
+        return $old;
+     
+  }
 }
 
 ?>
