@@ -22,10 +22,10 @@ class Slot
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Venue", inversedBy="slots")
-     * @ORM\JoinColumn(name="venue_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Court", inversedBy="slots")
+     * @ORM\JoinColumn(name="court_id", referencedColumnName="id")
      */
-    protected $venue;
+    protected $court;
 	
 	  /**
      * @ORM\OneToOne(targetEntity="Game", inversedBy="slot")
@@ -79,11 +79,11 @@ class Slot
     /**
      * Set venue
      *
-     * @param Rebase\BigvBundle\Entity\Venue $venue
+     * @param Rebase\BigvBundle\Entity\Court $court
      */
-    public function setVenue(\Rebase\BigvBundle\Entity\Venue $venue)
+    public function setCourt(\Rebase\BigvBundle\Entity\Court $court)
     {
-        $this->venue = $venue;
+        $this->court = $court;
     }
 
     /**
@@ -91,9 +91,9 @@ class Slot
      *
      * @return Rebase\BigvBundle\Entity\Venue 
      */
-    public function getVenue()
+    public function getCourt()
     {
-        return $this->venue;
+        return $this->court;
     }
 
     /**
