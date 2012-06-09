@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table()
  * @ORM\Entity
  */
 class Venue {
@@ -47,12 +46,33 @@ class Venue {
   /**
    * @ORM\OneToMany(targetEntity="VenueTeamLink", mappedBy="venue")
    */
-  protected $VenueTeamLink;
+  protected $VenueTeamLinks;
+  /**
+   * @ORM\OneToMany(targetEntity="VenueSeasonLink", mappedBy="venue")
+   */
+  protected $VenueSeasonLinks;
+
+  
+  
+  
+  public function ThisSeason()
+  {
+    foreach ($this->VenueSeasonLinks as $vsl)
+    {
+      if ($vsl->getSeason()->getId() == \Rebase\BigvBundle\Statics\Context::$season->getId())
+      {
+        return $vsl;
+      }
+    }
+    return null;
+  }
+  
+  
 
     public function __construct()
     {
         $this->courts = new \Doctrine\Common\Collections\ArrayCollection();
-    $this->VenueTeamLink = new \Doctrine\Common\Collections\ArrayCollection();
+    $this->VenueTeamLinks = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -128,7 +148,7 @@ class Venue {
     /**
      * Set league
      *
-     * @param Rebase\BigvBundle\Entity\Season $league
+     * @param \Rebase\BigvBundle\Entity\League $league
      */
     public function setLeague(\Rebase\BigvBundle\Entity\League $league)
     {
@@ -138,7 +158,7 @@ class Venue {
     /**
      * Get league
      *
-     * @return Rebase\BigvBundle\Entity\Season 
+     * @return Rebase\BigvBundle\Entity\League
      */
     public function getLeague()
     {
@@ -166,22 +186,42 @@ class Venue {
     }
 
     /**
-     * Add VenueTeamLink
+     * Add VenueTeamLinks
      *
-     * @param Rebase\BigvBundle\Entity\VenueTeamLink $venueTeamLink
+     * @param Rebase\BigvBundle\Entity\VenueTeamLink $venueTeamLinks
      */
-    public function addVenueTeamLink(\Rebase\BigvBundle\Entity\VenueTeamLink $venueTeamLink)
+    public function addVenueTeamLink(\Rebase\BigvBundle\Entity\VenueTeamLink $venueTeamLinks)
     {
-        $this->VenueTeamLink[] = $venueTeamLink;
+        $this->VenueTeamLinks[] = $venueTeamLinks;
     }
 
     /**
-     * Get VenueTeamLink
+     * Get VenueTeamLinks
      *
      * @return Doctrine\Common\Collections\Collection 
      */
-    public function getVenueTeamLink()
+    public function getVenueTeamLinks()
     {
-        return $this->VenueTeamLink;
+        return $this->VenueTeamLinks;
+    }
+
+    /**
+     * Add VenueSeasonLinks
+     *
+     * @param Rebase\BigvBundle\Entity\VenueSeasonLink $venueSeasonLinks
+     */
+    public function addVenueSeasonLink(\Rebase\BigvBundle\Entity\VenueSeasonLink $venueSeasonLinks)
+    {
+        $this->VenueSeasonLinks[] = $venueSeasonLinks;
+    }
+
+    /**
+     * Get VenueSeasonLinks
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getVenueSeasonLinks()
+    {
+        return $this->VenueSeasonLinks;
     }
 }

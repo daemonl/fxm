@@ -13,20 +13,88 @@ use Rebase\BigvBundle\Statics\Context;
 
 use Rebase\BigvBundle\Common\BasicFunctions;
 
-class LeagueController extends _ParentController
+class LeagueController extends _Parent
 {
-    public function indexAction($leagueID)
-    { 
-      if ((context::$league == null) OR (context::$league->getId() != $leagueID))
-      {
-        $this->setLeague($leagueID);
-      }
+  public function chooseLeagueAction()
+  {
+     $em = $this->getDoctrine()->getEntityManager();
+    $qb = $em->createQueryBuilder()
+            ->add('select', 'up')
+            ->add('from', 'RebaseBigvBundle:UserPermission up')
+            ->add('where', 'up.user = ?1')
+            ->setParameter(1, $this->get('security.context')->getToken()->getUser()->getId());
+    $query = $qb->getQuery();
+    $permissions = $query->getResult();
 
-      $league = context::$league;
-      return $this->render('RebaseBigvBundle:League:index.html.twig', array('league'=>$league));
+    return $this->render('RebaseBigvBundle:League:chooseLeague.html.twig', array('permissions'=>$permissions));
+  }
+  
+  private function loadLeague($leagueID)
+  {
+    $session = $this->getRequest()->getSession();
+    $em = $this->getDoctrine()->getEntityManager();
+    $qb = $em->createQueryBuilder();
+
+    $qb->add('select', 'league')
+      ->add('from', 'RebaseBigvBundle:League league')
+      ->add('where', 'league.id=?1')
+      ->setParameter(1, $leagueID);
+    
+    $league = $this->singleResultOrNull($qb->getQuery());
+    if ($league == null)
+    {
+      $session->set('league', 0);
+      $session->set('season', 0);
+      return $this->rejectContext();
     }
+    $session->set('league', $league->getId());
+    return $league;
+  }
+        
+  public function setLeagueAction($leagueID)
+  {
+    $session = $this->getRequest()->getSession();
+    $session->set('league', 0);
+    $session->set('season', 0);
+    
+    $this->loadLeague($leagueID);
 
-    public function editAction(Request $request, $leagueID)
+    return $this->redirect($this->generateUrl('_RBV_context_season'));
+  }
+    public function chooseSeasonAction()
+    { 
+      $session = $this->getRequest()->getSession();
+      $league = $this->loadLeague($session->get('league'));
+      $session->set('season', 0);
+      return $this->render('RebaseBigvBundle:League:chooseSeason.html.twig', array('league'=>$league));
+    }
+    
+    public function setSeasonAction($seasonID)
+    {
+      $session = $this->getRequest()->getSession();
+             
+      $em = $this->getDoctrine()->getEntityManager();
+      
+      $qb = $em->createQueryBuilder();
+    
+      $qb->add('select', 'season')
+        ->add('from', 'RebaseBigvBundle:Season season')
+        ->add('where', 'season.league=?1 AND season.id=?2')
+        ->setParameter(1, $session->get('league'))
+        ->setParameter(2, $seasonID);
+
+      $season = $this->singleResultOrNull($qb->getQuery());
+      if ($season == null)
+      {
+
+        $this->rejectContext();
+      }
+      $session->set('season', $season->getId());
+      return $this->redirect($this->generateUrl('_RBV_home'));
+    }
+    
+
+    public function editLeagueAction(Request $request, $leagueID)
     {
 
       if ($leagueID == 0)
@@ -102,15 +170,5 @@ class LeagueController extends _ParentController
       }else{
         return $f;
       }
-    }
-    
-    public function seasonIndexAction($seasonID)
-    {
-      if ((context::$season == null) OR (context::$season->getId() != $seasonID))
-      {
-        $this->setSeason($seasonID);
-      }
-      
-       return $this->render('RebaseBigvBundle:League:season.html.twig');
     }
 }

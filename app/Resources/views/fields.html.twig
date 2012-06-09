@@ -2,13 +2,15 @@
  
 {% block field_errors %}
 {% spaceless %}
-    <span class="help-inline">
         {% if errors|length > 0 %}
+            <div class="form-errors">
             {% for error in errors %}
-                {{ error.messageTemplate|trans(error.messageParameters, 'validators') }}<br />
+                <div style="margin: auto; position: relative;">
+                {{ error.messageTemplate|trans(error.messageParameters, 'validators') }}
+                </div>
             {% endfor %}
+            </div>
         {% endif %}
-    </span>
 {% endspaceless %}
 {% endblock field_errors %}
  
@@ -98,66 +100,126 @@
 {% endspaceless %}
 {% endblock time_widget %}
 
+{% block monthyear_widget %}
+{% spaceless %}
+
+      <div {{ block('widget_container_attributes') }}>
+        {{ form_widget(form.month, { 'attr': { 'class': 'span1' } }) }}&nbsp;
+        {{ form_widget(form.year, { 'attr': { 'style': 'width: 80px;' } }) }}&nbsp;
+      </div>
+  
+{% endspaceless %}
+{% endblock monthyear_widget %}
+
 {% block name_widget %}
 {% spaceless %}
-      <div {{ block('widget_container_attributes') }}>
+      <div {{ block('widget_container_attributes') }} class="row">
         <div class="span1">
             {{ form_widget(form.title, { 'attr': { 'class': 'span1' } }) }}
-            <div style='text-align: center'>Title</div>
+            {{ form_errors(form.title) }}
+            <div class="formSubtxt">Title</div>
+            
         </div>
-        <div class="span3">
-          {{ form_widget(form.forename, { 'attr': { 'class': 'span3' } }) }}
-            <div style='text-align: center'>Forename</div>
+        <div class="span3" style="width:107px;">
+          {{ form_widget(form.forename, { 'attr': { 'class': 'span2', 'style': 'width:100px' } }) }}
+            {{ form_errors(form.forename) }}
+            <div class="formSubtxt">Given Name</div>
+            
         </div>
-        <div class="span3">
-          {{ form_widget(form.surname, { 'attr': { 'class': 'span3' } }) }}
-            <div style='text-align: center'>Surname</div>
+        <div class="span3" style="width:107px;">
+          {{ form_widget(form.surname, { 'attr': { 'class': 'span2', 'style': 'width:98px' } }) }}
+            {{ form_errors(form.surname) }}
+            <div class="formSubtxt">Surname</div>
+            
         </div>
       </div>
 {% endspaceless %}
 {% endblock name_widget %}
 
+{% block patientname_widget %}
+{% spaceless %}
+      <div {{ block('widget_container_attributes') }} class="row">
+        <div class="span1">
+            {{ form_widget(form.title, { 'attr': { 'class': 'span1' } }) }}
+            {{ form_errors(form.title) }}
+            <div class="formSubtxt">Title</div>
+            
+        </div>
+        <div class="span3" style="width:110px;">
+          {{ form_widget(form.forename, { 'attr': { 'class': 'span2', 'style': 'width:100px' } }) }}
+            {{ form_errors(form.forename) }}
+            <div class="formSubtxt">Given Name</div>
+            
+        </div>
+        <div class="span3" style="width:110px;">
+          {{ form_widget(form.middle, { 'attr': { 'class': 'span2', 'style': 'width:100px' } }) }}
+            {{ form_errors(form.middle) }}
+            <div class="formSubtxt">Middle Name</div>
+            
+        </div>
+        <div class="span3" style="width:110px;">
+          {{ form_widget(form.surname, { 'attr': { 'class': 'span2', 'style': 'width:100px' } }) }}
+            {{ form_errors(form.surname) }}
+            <div class="formSubtxt">Surname</div>
+        </div>
+        <div class="span3" style="width:110px;">
+          {{ form_widget(form.preferred, { 'attr': { 'class': 'span2', 'style': 'width:100px' } }) }}
+            {{ form_errors(form.preferred) }}
+            <div class="formSubtxt">Preferred Name</div>
+            
+        </div>
+      </div>
+{% endspaceless %}
+{% endblock patientname_widget %}
+
+
 {% block phone_widget %}
 {% spaceless %}
       <div {{ block('widget_container_attributes') }}>
+        <div class="row">
+        <div class="span1_5">
+            {{ form_widget(form.type, { 'attr': { 'class': 'span1_5' } }) }}
+            <div class="formSubtxt">Type</div>
+        </div>
         <div class="span2">
-            {{ form_widget(form.type, { 'attr': { 'class': 'span2' } }) }}
-            <div style='text-align: center'>Type</div>
+          {{ form_widget(form.number, { 'attr': { 'class': 'span2' } }) }}
+            <div class="formSubtxt">Number</div>
         </div>
-        <div class="span3">
-          {{ form_widget(form.number, { 'attr': { 'class': 'span3' } }) }}
-            <div style='text-align: center'>Number</div>
-        </div>
+            </div>
       </div>
 {% endspaceless %}
 {% endblock phone_widget %}
 
 {% block address_widget %}
   {% spaceless %}
-    <div {{ block('widget_container_attributes') }}>
-      {{ form_widget(form.firstline, { 'attr': { 'class': 'span4' , 'style':'margin-bottom: 10px'} }) }}<br/>    
-      {{ form_widget(form.secondline, { 'attr': { 'class': 'span4' , 'style':'margin-bottom: 10px'} }) }}<br/>
+    <div {{ block('widget_container_attributes') }} >
+      {{ form_errors(form.firstline) }}
+        {{ form_widget(form.firstline, { 'attr': { 'class': 'span4' , 'style':'margin-bottom: 10px'} }) }}<br/>  
+      {{ form_errors(form.secondline) }}
+        {{ form_widget(form.secondline, { 'attr': { 'class': 'span4' , 'style':'margin-bottom: 10px'} }) }}<br/>
       <div class="clear"></div>
+      <div class="row">
       <div class="span2">
           {{ form_widget(form.city, { 'attr': { 'class': 'span2' } }) }}
-          <div style='text-align: center'>City</div>
+          <div class="formSubtxt">City</div>
       </div>
       <div class="span2">
           {{ form_widget(form.state, { 'attr': { 'class': 'span2' } }) }}
-          <div style='text-align: center'>State</div>             
+          <div class="formSubtxt">State</div>             
       </div>
-      <div class="clear" style="height: 10px"></div>
-      <div>          
+          </div>
+      <div class="clear" style="height: 20px"></div>
+      <div class="row">          
         <div class="span2">
           {{ form_widget(form.postcode, { 'attr': { 'class': 'span2' } }) }}
-          <div style='text-align: center'>Postcode</div>
+          <div class="formSubtxt">Postcode</div>
         </div>
         <div class="span2">
           {{ form_widget(form.country, { 'attr': { 'class': 'span2' } }) }}
-          <div style='text-align: center'>Country</div>
+          <div class="formSubtxt">Country</div>
         </div>
       </div>
-    </div>
+  </div>        
   {% endspaceless %}
 {% endblock address_widget %}
 
@@ -173,6 +235,20 @@
 {% endspaceless %}
 {% endblock hour_widget %}
 
+{% block round_widget %}
+{% spaceless %}
+      <div {{ block('widget_container_attributes') }}>
+        <div class="span1" style="text-align: right"> Round: </div>  
+        <div class="span1">{{ form_widget(form.number, { 'attr': { 'class': 'span1' } }) }}  {{ form_errors(form.number) }}</div>
+        <div class="span1" style="text-align: right"> Begins: </div>  
+        <div class="span3">{{ form_widget(form.start, { 'attr': { 'class': 'span3' } }) }}   {{ form_errors(form.start) }}</div>
+        <div class="span1" style="text-align: right"> Ends: </div>   
+        <div class="span3">{{ form_widget(form.end, { 'attr': { 'class': 'span3' , 'style': 'margin-left: 5px'} }) }}  {{ form_errors(form.end) }}</div>
+      </div>
+{% endspaceless %}
+{% endblock round_widget %}
+
+
 {% block entity_widget %}
 {% spaceless %}
 {% if attr.magic is defined %}
@@ -180,7 +256,7 @@
     <input autocomplete="off" type="text" id="magicEntity-{{id}}" startval="{{value}}" forID="{{id}}" entName="{{label}}" class="typeahead magicEntity" data-provide="typeahead" data-items="5" 
            data-source='[{% for choice, label in choices %}"{{label}}"{% if not loop.last %},{% endif %}{% endfor %}]' />
     <input type="hidden" {{ block('widget_attributes') }} value="{{value}}" />
-    <div class="MagicEntityStatus" id="magicEntityStatus-{{id}}">&nbsp;&nbsp;<div class='btn btn-green NewEntity message' style="display: none;" forID='{{id}}'>Add</div>&nbsp;{% if errors|length > 0 %}<i class="icon-remove"></i>{%else%}<i class="icon-ok"></i>{% endif %}&nbsp;<span class="message" style="display: none;">{{label}} does not exist.</span></div>
+    <div class="MagicEntityStatus" id="magicEntityStatus-{{id}}">&nbsp;&nbsp;<div class='btn btn-green NewEntity message' style="display: none;" forID='{{id}}'>Add</div>&nbsp;{% if errors|length > 0 %}<i class="icon-remove icon-light-gray"></i>{%else%}<i class="icon-ok"></i>{% endif %}&nbsp;<span class="message" style="display: none;">{{label}} does not exist.</span></div>
     
     <script type="text/javascript">
       var ItemsFor = Array();
@@ -225,12 +301,12 @@
             {% set attr = attr|merge({'data-prototype': block('collection_item_widget') }) %}
         {% endif %}
         <div {{ block('widget_container_attributes') }}>
-            {{ form_errors(form) }}
+                    {{ form_errors(form) }}
                 <ul class="formCollection-ul">
         {% for rows in form %}
-                <li>
+                        <li style="float:left;">
                     <div class="fancy-info-box">
-                  <div style="float:right; height: 0;z-index: 1;position: relative;">
+                  <div style="float:right; height: 0;z-index: 1;position: relative; margin-left: 5px;">
                       <a class="formCollection-remove" title="Remove" href="#">
                         <span><i class="icon-remove"></i></span>
 
@@ -247,7 +323,7 @@
         </div>
         <div class="clear"></div>
         <div>
-          <a class="formCollection-add" collectionId="{{ id }}" title="Add" href="#bottom">
+          <a class="formCollection-add btn btn-green" collectionId="{{ id }}" title="Add">
             <div style="display: none;"></div>
             <span>Add New</span>
           </a>
@@ -259,18 +335,25 @@
 
 {% block collection_item_widget %}
 {% spaceless %}
-    <li>
-    <div class="fancy-info-box" style="margin-top:10px;">     
-       <div style="float: right">
+    <li style="float:left;">
+    <div class="fancy-info-box">     
+       <div style="float: right; margin-left: 5px;">
          <a class="formCollection-remove" title="Remove" href="#"><span><i class="icon-remove"></i></span></a>
        </div>
       {{ form_widget(prototype, { 'attr': { 'style': 'float: left;' } }) }}
        <div class="clear"></div>
-    </div>
+       </div>
     </li>
 {% endspaceless %}
 {% endblock collection_item_widget %}
 
+{% block duration_widget %}
+{% spaceless %}
+    <div class="input-append">
+    {{ block('field_widget') }}<span class="add-on">minutes</span>
+    </div>
+{% endspaceless %}
+{% endblock %}
     
 {% block money_widget %}
 {% spaceless %}
@@ -289,3 +372,18 @@
 {% endspaceless %}
 {% endblock %}
     
+    
+{% block EventPatient_widget %}
+{% spaceless %}
+   {{ form_widget(form.patient) }}
+   {{ form_widget(form.fees) }}
+{% endspaceless %}
+{% endblock %}
+    
+{% block MagicPatient_widget %}
+    {{ form_widget(form)}}
+{% endblock %}
+
+{% block MagicFee_widget %}
+ {{ form_widget(form)}}
+{% endblock %}

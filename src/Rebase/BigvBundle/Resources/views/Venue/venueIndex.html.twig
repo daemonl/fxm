@@ -1,24 +1,44 @@
 {% extends 'RebaseBigvBundle::base.html.twig' %}
 
-{% block breadcrumb %}
-      {{ parent() }}
-      <li>Venues</li>
-{% endblock %}
 
 {% block main %}
 
-    {% for venue in venues %}
-		<div class="well">
-		<p><strong>{{ venue.getName() }}</strong> ({{ venue.courts|length }})
-		<p>
-		  <a href="{{ path('_RBV_venue_courts', { 'venueID': venue.getID()}) }}">Courts</a> | 
-		  <a href="{{ path('_RBV_venue_home', { 'venueID': venue.getID()}) }}">Venue Details</a>
-		</p>
-		</div>
+
+  {% for venue in venues %}
+    {% set vsl = venue.ThisSeason %}
+    <div class="fancy-info-box"> 
+      <div class="row">
+      <div class="span3">
+      <p><strong>{{ venue.getName() }}</strong></p>
+      </div>
+       
+          <div class="span5">
+            <a class="btn" href="{{ path('_RBV_venue_info', { 'venueID': venue.getID()}) }}">Edit</a>    
+            {% if vsl %}
+              <a class="btn" href="{{ path('_RBV_venue_add_court', { 'vslID': vsl.getID()}) }}">Add Court</a>
+            {% else %}
+              <a class="btn" href="{{ path('_RBV_venue_use', { 'venueID': venue.getID()} )}}">Use for Season</a>
+            {% endif %}
+          </div>
+        
+        {% if vsl %}
+        <div class="clear" style="height: 10px"></div>
+ 
+        <div class="span3" style="text-align: right">Courts:</div>
+        <div class="span8">
+          {% for court in venue.ThisSeason.courts %}
+            <a class="btn btn-primary" href="{{ path('_RBV_venue_edit_court', {'vslID': vsl.getID(), 'courtID':court.id})}}">{{court.name}}</a>
+          {% endfor %}
+        </div>
+        {% endif %}
+      <div class="clear"></div>
+    </div> 
+        </div>	
 	{% else %}
-		<div class="bordered"><p>There are no venues in the system yet.</p></div>
+		<div class="grid_5 bordered"><p>There are no venues in the system yet.</p></div>
 	{% endfor %}
-	
+    
+
 
 	<a href="{{ path('_RBV_venue_create')}}">Add a new venue</a>
 

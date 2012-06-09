@@ -5,7 +5,7 @@ namespace Rebase\BigvBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 
-class DefaultController extends Controller
+class DefaultController extends _Season
 {
     
     public function indexAction()
@@ -21,6 +21,6 @@ class DefaultController extends Controller
               ->setParameter(1, $user->getId());
       
       $UserPermissions = $query->getQuery()->getResult();
-        return $this->render('RebaseBigvBundle:Default:index.html.twig', array('permissions'=>$UserPermissions));
+      return $this->render('RebaseBigvBundle:Default:home.html.twig', array('permissions'=>$UserPermissions));
     }
 }

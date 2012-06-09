@@ -1,20 +1,18 @@
 {% extends 'RebaseBigvBundle::base.html.twig' %}
 
-{% block top %}
- <div class="grid_8">
-    <a href="{{path('_RBV_home')}}">Home</a> > Divisions
-  </div>
-{% endblock %}
-
 {% block main %}
 
     {% for division in divisions %}
-		<div class="grid_5 bordered">
-		<p><strong>{{ division.getName() }}</strong> ({{ division.getFullName() }})</p>
-		<p>
-		  <a href="{{ path('_RBV_division_edit', { 'divisionID': division.getID()}) }}">Edit</a> | 
-		  <a href="{{ path('_RBV_division_delete', { 'divisionID': division.getID()}) }}">Delete</a>
-		</p>
+		<div class="fancy-info-box">
+      <div class="row">
+        <div class="span4">
+		      <p><strong>{{ division.getName() }}</strong> ({{ division.getFullName() }})</p>
+        </div>
+        <div class="span5">
+		      <a class="btn btn-primary" href="{{ path('_RBV_division_edit', { 'divisionID': division.getID()}) }}">Edit</a>
+		      <a class="btn btn-danger" href="{{ path('_RBV_division_delete', { 'divisionID': division.getID()}) }}">Delete</a>          
+        </div>
+		  </div>
 		</div>
 	{% else %}
 		<div class="grid_5 bordered"><p>There are no divisions in the system yet.</p></div>

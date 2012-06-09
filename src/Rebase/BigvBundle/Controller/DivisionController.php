@@ -11,22 +11,23 @@ use Rebase\BigvBundle\Entity\Division;
 
 use Rebase\BigvBundle\Common\BasicFunctions;
 
-class DivisionController extends Controller
+class DivisionController extends _Season
 {
     
     public function indexAction()
     {
-		$repository = $this->getDoctrine()
-			->getRepository('RebaseBigvBundle:Division');
-		$divisions = $repository->findAll();
-        return $this->render('RebaseBigvBundle:Division:divisionIndex.html.twig', array('divisions'=>$divisions));
+		  $repository = $this->getDoctrine()
+			  ->getRepository('RebaseBigvBundle:Division');
+      
+		  $divisions = $repository->findAll();
+      return $this->render('RebaseBigvBundle:Division:divisionIndex.html.twig', array('divisions'=>$divisions));
     }
 
     public function createAction(Request $request)
     {
       //CreateVenue
       $division = new Division();
-      $division->setName("New Division");
+
 
 	  $form = $this->createFormBuilder($division)
             ->add('name')
@@ -59,15 +60,24 @@ class DivisionController extends Controller
 
     public function editAction(request $request, $divisionID)
     {
-		$repository = $this->getDoctrine()
-			->getRepository('RebaseBigvBundle:Division');
-		$division = $repository->findOneById($divisionID);
-
-	  	$form = $this->createFormBuilder($division)
-            ->add('name')
-			->add('FullName')
-			->add('GamesPerTeam')
-			->getForm();
+      $em = $this->getDoctrine()->getEntityManager();
+      
+      if ($divisionID == 0)
+      {
+        $division = new Division();
+        $division->setSeason($this->season);
+      }else{
+        $query = $em->createQuery("SELECT d FROM RebaseBigvBundle:Division d WHERE d.id=?1 AND d.season=?2")
+                ->setParameter(1, $divisionID)
+                ->setParameter(2, $this->season->getId());
+        $division = $this->singleResultOr404($query);
+      }
+      
+      $form = $this->createFormBuilder($division)
+          ->add('name')
+          ->add('FullName')
+          ->add('GamesPerTeam')
+          ->getForm();
 
 		if ($request->getMethod() == 'POST') {
 			$form->bindRequest($request);
@@ -79,7 +89,7 @@ class DivisionController extends Controller
 			}
 		}
         
-		return $this->render('RebaseBigvBundle:Division:divisionEdit.html.twig', array(
+		return $this->render('RebaseBigvBundle:Division:divisionForm.html.twig', array(
           	'form' => $form->createView(),
 		  	'division' => $division));
 	}

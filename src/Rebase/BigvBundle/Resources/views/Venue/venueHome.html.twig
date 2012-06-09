@@ -7,6 +7,6 @@
      <tr><th>ID: </th><td>{{ venue.getID() }}</td>
 	 <tr><th>Name: </th><td>{{ venue.getName() }}</td>
    </table>
-   <a href="{{ path('_RBV_venue_edit', { 'venueID': venue.Id}) }}">edit</a>
+   <a href="{{ path('_RBV_venue_info', { 'venue': venue.getID()}) }}">edit</a>
  </div>
 {% endblock %}

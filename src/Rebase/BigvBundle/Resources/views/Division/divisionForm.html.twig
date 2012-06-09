@@ -1,0 +1,19 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block pageTitle %}
+Edit Division ({{division.getName}})
+{% endblock %}
+
+{% block main %}
+
+ <form class="form-horizontal" action="" method="post" {{ form_enctype(form) }}>
+	{{ form_rest(form) }}
+     
+     
+     <div class="form-actions">
+       <button type="submit" class="btn btn-primary">Save</button>  
+     </div>
+</form>
+
+ 
+{% endblock %}

@@ -10,85 +10,103 @@ use Rebase\BigvBundle\Entity\Club;
 use Rebase\BigvBundle\Entity\Team;
 use Rebase\BigvBundle\Entity\VenueTeamLink;
 
-
-class ClubController extends Controller
+use Rebase\BigvBundle\Form\Type\TeamType;
+use Doctrine\ORM\EntityRepository;
+use Rebase\BigvBundle\AltObj\CollectionPersist\Collectionator;
+class ClubController extends _Season
 {
   public function indexAction()
   {
-    $em = $this->getDoctrine()->getEntityManager();
-    $clubs = $em->getRepository('RebaseBigvBundle:Club')->findAll();
+    $clubs = $this->league->getClubs();
     return $this->render('RebaseBigvBundle:Club:index.html.twig', array('clubs'=> $clubs));
-  }
-    
+  } 
 	
-  public function editAction(Request $request, $clubID)
+  public function editAction(Request $request, $cslID)
   {
     $em = $this->getDoctrine()->getEntityManager();
     
-    if ($clubID != 0)
+    if ($cslID != 0)
     {
-      $new = false;
-      $club = $em->getRepository('RebaseBigvBundle:Club')->findOneById($clubID);
-    }else{
-      $new = true;
-      $club = new Club();
-      $club->setName("New Club");
+     $csl = $this->loadCSL($cslID);
+      
+    }else{ 
+      $csl = new \Rebase\BigvBundle\Entity\ClubSeasonLink();
+      $club = new \Rebase\BigvBundle\Entity\Club();
+      $club->addClubSeasonLink($csl);
+      $club->setLeague($this->league);
+      $csl->setClub($club);
+      $csl->setSeason($this->season);
     }
-      $form = $this->createFormBuilder($club)
-            ->add('name', 'text')
-            ->add('shortname', 'text')
-              ->add('venue', 'entity', array(
-              'class' => 'RebaseBigvBundle:Venue'
-            ))
-            ->getForm();
+      $form = $this->createFormBuilder($csl)
+            ->add('club.name', 'text')
+            ->add('club.shortname', 'text')
+            ->add('vsl', 'entity', array('class' => 'RebaseBigvBundle:VenueSeasonLink', 'property' => 'venue.name', 'query_builder' => function(EntityRepository $er) {
+        return $er->createQueryBuilder('funder')
+                ->add('select', 'vsl')
+                ->add('from', 'RebaseBigvBundle:VenueSeasonLink vsl')
+                ->add('where', 'vsl.season = ?1')
+                ->setParameter(1, \Rebase\BigvBundle\Statics\Context::$season->getId());
+        }))
+        ->getForm();
 
 		if ($request->getMethod() == 'POST') {
 			  $form->bindRequest($request);
 			  if ($form->isValid()) {
-				  $em = $this->getDoctrine()->getEntityManager();
-      	  $em->persist($club);
+          
+          $em->persist($csl->getClub());
+      	  $em->persist($csl);
       	  $em->flush();
       	  //ViewVenue
-      	  return $this->redirect($this->generateUrl('_RBV_club_home', array('clubID'=>$club->getId())));
-		    }
+      	  return $this->redirect($this->generateUrl('_RBV_club_home', array('cslID'=>$csl->getId())));
+		    }else{
+          $this->flash('error', 'There was an error with your form.');
+        }
       }
-		  return $this->render('RebaseBigvBundle:Club:EditClub.html.twig', array('club' => $club , 'form' => $form->createView(), 'new'=>$new));
+		  return $this->render('RebaseBigvBundle:Club:clubForm.html.twig', array('csl' => $csl , 'form' => $form->createView()));
     }
     
-    public function homeAction($clubID)
+    public function loadCSL($cslID)
+    {
+       $em = $this->getDoctrine()->getEntityManager();
+       $query = $em->createQuery("SELECT csl, club FROM RebaseBigvBundle:ClubSeasonLink csl JOIN csl.club club WHERE csl.id=?1 AND csl.season=?2")
+              ->setParameter(1, $cslID)
+              ->setParameter(2, $this->season->getId());
+      $csl = $this->singleResultOr404($query);
+      return $csl;
+    }
+    
+    public function homeAction(Request $request, $cslID)
     {
       $em = $this->getDoctrine()->getEntityManager();
-      $club = $em->getRepository('RebaseBigvBundle:Club')->findOneById($clubID);
-      $divisions = $em->getRepository('RebaseBigvBundle:Division')->findAll();
-	  $rDivs = array();
-	  foreach($divisions as $d)
-	  {
-		  $tf = new \Rebase\BigvBundle\Common\Classes\TeamForm();
-		  $tf->Division = $d;
-		  $t = $em->getRepository('RebaseBigvBundle:Team')->findOneBy(array('club' => $club->getID(), 'division' => $d->getId()));
-		  if ($t)
-		  {
-			$tf->Exists = 1;
-			$tf->Team = $t;
-      $links = $em->getRepository('RebaseBigvBundle:VenueTeamLink')->findBy(array('team' => $t->getId()));
-      $tf->Venues = array();
-      $NEWVenue = new VenueTeamLink();
-      $NEWVenue->setTeam($t);
-      $tf->Form = $this->createFormBuilder($NEWVenue)
-            ->add('venue', 'entity', array(
-              'class' => 'RebaseBigvBundle:Venue'
-            ))
-            ->getForm()->createView();
-      foreach ($links as $l)
-      {
-        $tf->Venues[] = $l;
+      
+      $csl = $this->loadCSL($cslID);
+      
+      
+      $form = $this->createFormBuilder($csl)
+         ->add('teams', 'collection', array('required'=>false, 'label'=>'-', 'type'=>new TeamType(), 'allow_add'=>true, 'allow_delete'=>true, 'by_reference' =>true))
+           
+              ->getForm();
+        
+          if ($request->getMethod() == 'POST')
+    {
+     $em = $this->getDoctrine()->getEntityManager();
+
+     $C = new Collectionator($em,$csl->getTeams(), array(), array('csl'=>$csl));
+   
+      $form->bindRequest($request);
+      
+      if ($form->isValid()){
+       
+        $C->persist();
+        $em->flush();
+        $this->flash('good', "Your changes to this club's teams were successfully saved.");
+        return $this->redirect($this->generateUrl("_RBV_club_index"));
+      }else{
+        $this->flash('error', 'There was an error updating the teams. Please check below.');
       }
-		  }else{
-			  $tf->Exists = 0;  
-		  }
-		  $rDivs[] = $tf;
-	  }
-      return $this->render('RebaseBigvBundle:Club:Home.html.twig', array('club' => $club, 'teams' => $rDivs));
+    }
+
+      return $this->render('RebaseBigvBundle:Club:clubTeams.html.twig', array('csl' => $csl, 'form'=>$form->createView()));
     }
     
     public function addTeamAction(Request $request, $clubID, $divisionID)

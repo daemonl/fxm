@@ -18,10 +18,10 @@ class Court
   private $id;
     
   /**
-   * @ORM\ManyToOne(targetEntity="Venue", inversedBy="games")
-   * @ORM\JoinColumn(name="venue_id", referencedColumnName="id")
+   * @ORM\ManyToOne(targetEntity="VenueSeasonLink", inversedBy="courts")
+   * @ORM\JoinColumn(name="vsl_id", referencedColumnName="id")
    */
-	private $venue;
+	private $vsl;
   
   /**
    * @ORM\Column(type="string", length=100)
@@ -32,6 +32,7 @@ class Court
    * @ORM\OneToMany(targetEntity="Slot", mappedBy="court")
    */
   private $slots;
+   
     public function __construct()
     {
         $this->slots = new \Doctrine\Common\Collections\ArrayCollection();
@@ -68,23 +69,23 @@ class Court
     }
 
     /**
-     * Set venue
+     * Set vsl
      *
-     * @param Rebase\BigvBundle\Entity\Venue $venue
+     * @param Rebase\BigvBundle\Entity\VenueSeasonLink $vsl
      */
-    public function setVenue(\Rebase\BigvBundle\Entity\Venue $venue)
+    public function setVsl(\Rebase\BigvBundle\Entity\VenueSeasonLink $vsl)
     {
-        $this->venue = $venue;
+        $this->vsl = $vsl;
     }
 
     /**
-     * Get venue
+     * Get vsl
      *
-     * @return Rebase\BigvBundle\Entity\Venue 
+     * @return Rebase\BigvBundle\Entity\VenueSeasonLink 
      */
-    public function getVenue()
+    public function getVsl()
     {
-        return $this->venue;
+        return $this->vsl;
     }
 
     /**

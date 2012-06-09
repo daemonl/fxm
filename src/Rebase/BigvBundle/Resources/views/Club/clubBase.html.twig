@@ -3,17 +3,17 @@
 {% block top %}
 <ul class="breadcrumb">
   <li>
-    <a href="{{path('_RBV_home')}}">Home</a> <span class="divider">/</span>
+    <a href="{{path('_RBV_home')}}">Home</a> <span class="divider">&gt;</span>
   </li>
   <li>
-    <a href="{{path('_RBV_club_index')}}">Clubs</a> <span class="divider">/</span>
+    <a href="{{path('_RBV_club_index')}}">Clubs</a> <span class="divider">&gt;</span>
   </li>
-  <li class="active">{{club.getName()}}</li>
+  <li class="active">{{csl.club.getName()}}</li>
 </ul>
 {% endblock %}
 
 {% block main %}
 
- {% block clubContent %} {% endblock %}
+{% block clubContent %} {% endblock %}
 
 {% endblock %}

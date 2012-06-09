@@ -3,7 +3,7 @@
 
 {% block clubContent %}
 <h1>Teams for {{club.getName()}}</h1>
-{% for team in teams %}
+{% for team in club.teams %}
   	<div class="bordered AutoLayout" >
     <p><strong>{{team.Division.getName}}</strong></p>
 	{% if team.Exists == 1 %}
@@ -22,10 +22,9 @@
 	{% else %}
 	   <a style="display: block; width: 100px;" class="BTN addDivision" href="{{path('_RBV_club_addTeam', { 'clubID': club.getID(), 'divisionID': team.Division.getID()})}}">Add Team</a>
 	{% endif %}
-	
-   
 	</div>
-
+{% else %}
+You must create a division before you can create any teams.
 {% endfor %}
 </table>
 {% endblock %}

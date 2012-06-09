@@ -14,35 +14,37 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Rebase\BigvBundle\Statics\Context;
 
-class _ParentController extends Controller{
+class _Parent extends Controller{
 
-  //USE THIS INSTEAD OF CONSTRUCT, as 
-  public function setContainer(ContainerInterface $container = null)
-  {
-    $this->container = $container;
-    $session = $this->getRequest()->getSession();
-    
-    $this->setLeague($session->get('league'));
-    $this->setSeason($session->get('season'));
-  }
-  
   public function singleResultOr404(Query $query)
   {
     try {
         return $query->getSingleResult();
       } catch (NoResultException $e) {
-        echo "404 - No Results for Query";
-        die();
+        throw $this->createNotFoundException();
+       // echo "404 - No Results for Query";
+       // die();
       }
   }
-   public function singleResultOrNull(Query $query)
+  public function singleResultOrNull(Query $query)
   {
     try {
         return $query->getSingleResult();
       } catch (NoResultException $e) {
         return null;
       }
-  } 
+  }
+  public function flash($type, $message)
+  {
+    $this->get('session')->setFlash($type, $message);
+  }
+  
+  public function rejectContext()
+  {
+     echo $this->redirect($this->generateUrl('_RBV_context_league'));
+     die();
+  }
+  
   public function setLeague($newId)
   {
     $em = $this->getDoctrine()->getEntityManager();
@@ -79,9 +81,12 @@ class _ParentController extends Controller{
     if ($season != null)
     {
       $session->set('season', $season->getId());
+      $session->set('league', $season->getLeague()->getId());
       context::$season = $season;
+      context::$league = $season->getLeague();
     }
   }
+
   
   public function doForm(Request $request, $pageTitle, $submit, \Symfony\Component\Form\Form $form)
   {
@@ -95,33 +100,6 @@ class _ParentController extends Controller{
 			}
    }
     return $this->render('RebaseBigvBundle:Generic:form.html.twig', array('form'=>$form->createView(), 'pageTitle'=>$pageTitle, 'submitLabel'=>$submit));
-  }
-  
-   function getOldForPersistCollection($old)
-  {
-    $arr = array();
-    foreach ($old as $o)
-    {
-      $arr[] = $o;
-    }
-    return $arr;
-  }
-  function getDeleteListForPersistCOllection($old, $new)
-  {
-    $em = $this->getDoctrine()->getEntityManager();
-     foreach ($new as $n)
-        {
-          foreach ($old as $key => $o)
-          {
-            if ($o->getId() === $n->getId())
-            {
-              unset($old[$key]);
-            }
-          }
-        }
-        
-        return $old;
-     
   }
 }
 

@@ -118,7 +118,7 @@ class User implements UserInterface, \Serializable
      */
     public function setPassword($password)
     {
-        $this->password = SHA1($password);
+        $this->password = $password;
     }
 
     /**

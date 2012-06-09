@@ -47,7 +47,6 @@ class UserPermission
     }
 
    
-
     /**
      * Set userID
      *

@@ -1,0 +1,40 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block breadcrumb %}
+<div class="grid_6">Home</div>
+{% endblock %}
+
+{% block main %}
+
+<div class="row">
+  <div class="span2">
+    <h2>League:</h2>
+  </div>
+  <div class="span5">
+    <h3>{{ context.league.name }}</h3>
+  </div>
+  <div class="clear"></div>
+  <div class="span2">
+    <h2>Season:</h2>
+  </div>
+  <div class="span5">
+    <h3>{{ context.season.name }}</h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span5">
+<div class="fancy-info-box">
+  <div class="FR">
+    <a class="btn" href="{{path('_RBV_rounds')}}">Set Rounds</a>
+  </div>
+<h2>Rounds</h2>
+{% for round in context.season.rounds %}
+  <div>{{round.number}}: {{round.start|date}} - {{round.end|date}}</div>
+{% else %}
+  <div>No rounds set.</div>
+{% endfor %}
+</div>
+  </div>
+</div>
+{% endblock %}

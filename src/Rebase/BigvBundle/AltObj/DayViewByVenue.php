@@ -11,7 +11,24 @@ class DayViewByVenue extends DayView
     
     $rounds = $em->getRepository('RebaseBigvBundle:Round')->findAll();
     $this->Teams = $em->getRepository('RebaseBigvBundle:Team')->findAll();
-    $this->Games = $venue->getGames();  
+
+    
+    
+    $this->Games = array();
+    foreach ($venue->getCourts() as $court)
+    {
+      foreach ($court->getSlots() as $slot)
+      {
+        if ($slot->getGame() != null)
+        {
+          $this->Games[] = $slot->getGame();
+        }
+      } 
+    }
+    
+    
+    
+    
     foreach ($rounds as $R)
     {
     

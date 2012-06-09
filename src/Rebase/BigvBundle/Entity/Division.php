@@ -19,9 +19,9 @@ class Division
 
       /**
    * @ORM\ManyToOne(targetEntity="Season", inversedBy="divisions")
-   * @ORM\JoinColumn(name="league_id", referencedColumnName="id")
+   * @ORM\JoinColumn(name="season_id", referencedColumnName="id")
    */
-	private $league;
+	private $season;
   
     /**
     * @ORM\Column(type="string", length=100)
@@ -141,11 +141,11 @@ class Division
     /**
      * Set league
      *
-     * @param Rebase\BigvBundle\Entity\Season $league
+     * @param Rebase\BigvBundle\Entity\Season $season
      */
-    public function setSeason(\Rebase\BigvBundle\Entity\Season $league)
+    public function setSeason(\Rebase\BigvBundle\Entity\Season $season)
     {
-        $this->league = $league;
+        $this->season = $season;
     }
 
     /**
@@ -155,26 +155,7 @@ class Division
      */
     public function getSeason()
     {
-        return $this->league;
+        return $this->season;
     }
 
-    /**
-     * Set league
-     *
-     * @param Rebase\BigvBundle\Entity\Season $league
-     */
-    public function setLeague(\Rebase\BigvBundle\Entity\Season $league)
-    {
-        $this->league = $league;
-    }
-
-    /**
-     * Get league
-     *
-     * @return Rebase\BigvBundle\Entity\Season 
-     */
-    public function getLeague()
-    {
-        return $this->league;
-    }
 }

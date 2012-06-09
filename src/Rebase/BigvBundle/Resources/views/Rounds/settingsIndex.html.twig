@@ -1,0 +1,11 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block top %}
+  <div class="grid_5"> 
+    <p><a href="{{ path('_RBV_settings_index') }}">Settings</a> > </p>
+  </div>
+{% endblock %}
+
+{% block main %}
+  <a href="{{path('_RBV_settings_rounds')}}">Set dates for Rounds</a>
+{% endblock %}

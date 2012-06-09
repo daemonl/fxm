@@ -37,11 +37,10 @@
   $(document).ready(function () {
     
     {% for T in DV.Teams %}
-      Teams[{{T.getID}}] = "{{T.getClub.getShortName}}";   
+      Teams[{{T.getID}}] = "{{T.csl.Club.ShortName}}";   
     {% endfor %}
     
     {% for G in DV.Games %} 
-      {% if G.getSlot %}
         $(".Slot[slotID='{{G.getSlot.getId}}']").append(
           MakeGame(
             {{G.getId}},
@@ -49,15 +48,6 @@
             {{G.getAwayTeam.getId}},
             "{{G.getHomeTeam.getDivision.getName}}",
             {{G.getShortDate}})); 
-      {% else %}
-       $(".NonSlot[date='{{G.getShortDate}}'][venue='{{G.getVenue.getId}}']").append(
-          MakeGame(
-            {{G.getId}},
-            {{G.getHomeTeam.getId}},
-            {{G.getAwayTeam.getId}},
-            "{{G.getHomeTeam.getDivision.getName}}",
-            {{G.getShortDate}})); 
-      {% endif %}
     {% endfor %} 
       
     $(".FreeSlot, .NonSlot").sortable({

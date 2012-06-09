@@ -1,16 +1,16 @@
 {% extends 'RebaseBigvBundle:Club:clubBase.html.twig' %}
 
 {% block pageTitle %}
-Club Settings for {{club.getName}}
+Club Settings for {{csl.club.getName}}
 {% endblock %}
 
 {% block main %}
-  <form class="form-horizontal" action="{{ path('_RBV_club_edit', { 'clubID': club.getID()}) }}" method="post" {{ form_enctype(form) }}>
+  <form class="form-horizontal" action="" method="post" {{ form_enctype(form) }}>
     <fieldset>   
  {{ form_widget(form) }}    
       </fieldset>
       <div class="form-actions">
-    <input type="submit" value="Update" />
+    <button class="btn btn-primary" type="submit">Save</button>
     </div>
   </form>
 {% endblock %}

@@ -1,18 +1,18 @@
 {% extends 'RebaseBigvBundle::base.html.twig' %}
 
-{% block top %} <div class="grid_8"> <a href="{{path('_RBV_home')}}">Home</a> > Day View </div> {% endblock %}
+
 
 {% block main %}
-<div class="grid_5 bordered">
-  <h1>Venues</h1>
-  {% for venue in venues %}
-    <div class="bordered"><a href="{{path('_RBV_dayview_byvenue', { 'venueID': venue.getID()})}}">{{venue.getName}}</a></div>
+<div class="fancy-info-box">
+  <h2>Venues</h2>
+  {% for vsl in vsls %}
+   <a class="btn btn-primary" href="{{path('_RBV_dayview_byvenue', { 'vslID': vsl.getID()})}}">{{vsl.venue.getName}}</a>
   {% endfor %}
 </div>
-<div class="grid_5 bordered">
-  <h1>Rounds</h1>
+<div class="fancy-info-box">
+  <h2>Rounds</h2>
   {% for round in rounds %}
-    <div class="bordered"><a href="{{path('_RBV_dayview_byround', { 'roundID': round.getID()})}}">Round {{round.getNumber}}</a></div>
+   <a class="btn btn-primary" href="{{path('_RBV_dayview_byround', { 'roundID': round.getID()})}}">Round {{round.getNumber}}</a>
   {% endfor %}
 </div>
 {% endblock %}

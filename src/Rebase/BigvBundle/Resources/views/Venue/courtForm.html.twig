@@ -1,0 +1,22 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+
+{% block pageTitle %}
+Court
+ <a class="FR btn btn-danger" href="{{ path('_RBV_venue_delete_court', {'vslID': court.vsl.getID(), 'courtID':court.id})}}">Delete {{court.name}}</a>
+{% endblock %}
+
+{% block main %}
+  <form class="form-horizontal" action="" method="post" {{ form_enctype(form) }}>
+    <fieldset>   
+ {{ form_widget(form) }}    
+      </fieldset>
+    <div class="form-actions">
+      <a class="btn" href="{{path('_RBV_home')}}">Cancel</a>
+        
+      <input class="btn btn-primary" type="submit" value="Save" />
+    </div>
+  </form>
+
+<script type="text/javascript" src="{{asset('js/basicFormCollection.js')}}"></script>
+{% endblock %}

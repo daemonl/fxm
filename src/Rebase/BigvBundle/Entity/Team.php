@@ -18,11 +18,17 @@ class Team
     private $id;
 	
 	/**
-     * @ORM\ManyToOne(targetEntity="Club", inversedBy="teams")
-     * @ORM\JoinColumn(name="club_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="ClubSeasonLink", inversedBy="teams")
+     * @ORM\JoinColumn(name="csl_id", referencedColumnName="id")
      */
-	private $club;
+	private $csl;
 	
+      
+   	/**
+     * @ORM\Column(type="string")
+     */
+	private $name;
+  
 	  /**
      * @ORM\ManyToOne(targetEntity="Division", inversedBy="teams")
      * @ORM\JoinColumn(name="division_id", referencedColumnName="id")
@@ -43,9 +49,11 @@ class Team
      * @ORM\OneToMany(targetEntity="Game", mappedBy="awayTeam")
      */
     protected $AwayGames;  
+   
     public function __construct()
     {
-        $this->HomeGames = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->VenueTeamLink = new \Doctrine\Common\Collections\ArrayCollection();
+    $this->HomeGames = new \Doctrine\Common\Collections\ArrayCollection();
     $this->AwayGames = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
@@ -60,23 +68,23 @@ class Team
     }
 
     /**
-     * Set club
+     * Set csl
      *
-     * @param Rebase\BigvBundle\Entity\Club $club
+     * @param Rebase\BigvBundle\Entity\ClubSeasonLink $csl
      */
-    public function setClub(\Rebase\BigvBundle\Entity\Club $club)
+    public function setCsl(\Rebase\BigvBundle\Entity\ClubSeasonLink $csl)
     {
-        $this->club = $club;
+        $this->csl = $csl;
     }
 
     /**
-     * Get club
+     * Get csl
      *
-     * @return Rebase\BigvBundle\Entity\Club 
+     * @return Rebase\BigvBundle\Entity\ClubSeasonLink 
      */
-    public function getClub()
+    public function getCsl()
     {
-        return $this->club;
+        return $this->csl;
     }
 
     /**
@@ -97,6 +105,26 @@ class Team
     public function getDivision()
     {
         return $this->division;
+    }
+
+    /**
+     * Add VenueTeamLink
+     *
+     * @param Rebase\BigvBundle\Entity\VenueTeamLink $venueTeamLink
+     */
+    public function addVenueTeamLink(\Rebase\BigvBundle\Entity\VenueTeamLink $venueTeamLink)
+    {
+        $this->VenueTeamLink[] = $venueTeamLink;
+    }
+
+    /**
+     * Get VenueTeamLink
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getVenueTeamLink()
+    {
+        return $this->VenueTeamLink;
     }
 
     /**
@@ -130,33 +158,22 @@ class Team
     }
 
     /**
-     * Set HomeVenue
+     * Set name
      *
-     * @param Rebase\BigvBundle\Entity\Venue $homeVenue
+     * @param string $name
      */
-    public function setHomeVenue(\Rebase\BigvBundle\Entity\Venue $homeVenue)
+    public function setName($name)
     {
-        $this->HomeVenue = $homeVenue;
-    }
-
-
-    /**
-     * Add VenueTeamLink
-     *
-     * @param Rebase\BigvBundle\Entity\VenueTeamLink $venueTeamLink
-     */
-    public function addVenueTeamLink(\Rebase\BigvBundle\Entity\VenueTeamLink $venueTeamLink)
-    {
-        $this->VenueTeamLink[] = $venueTeamLink;
+        $this->name = $name;
     }
 
     /**
-     * Get VenueTeamLink
+     * Get name
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return string 
      */
-    public function getVenueTeamLink()
+    public function getName()
     {
-        return $this->VenueTeamLink;
+        return $this->name;
     }
 }

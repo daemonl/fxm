@@ -13,12 +13,14 @@
 
 $(document).on("click", ".formCollection-add", function(event) {
   event.stopPropagation();
+  event.preventDefault();
   addToCollectionForm($(this).attr('collectionId')); 
 });
 
 $(document).on("click", ".formCollection-remove", function(event) {
   event.stopPropagation();
-  if (confirm("Are you sure you want this?") == true)
+  event.preventDefault();
+  if (confirm("Are you sure you want to remove this?") == true)
     {
       $(this).parent().parent().remove();
     }

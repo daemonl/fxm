@@ -1,12 +1,5 @@
 {% extends 'RebaseBigvBundle::base.html.twig' %}
 
-{% block breadcrumb %}
-      {{ parent() }}
-      <li><a href="{{ path('_RBV_venue_index') }}">Venues</a> <span class="divider">/</span></li>
-      <li><a href="{{ path('_RBV_venue_home', {'venueID':venue.Id}) }}">{{ venue.getName() }}</a> <span class="divider">/</span></li>
-{% endblock %}
-
-
 {% block main %}
   Venue Body Placeholder
 {% endblock %}

@@ -1,3 +1,9 @@
+Rebase\BigvBundle\Entity\Round:
+    properties:
+        number:
+            - NotBlank: ~
+
+
 Rebase\BigvBundle\Entity\Venue:
     properties:
         name:

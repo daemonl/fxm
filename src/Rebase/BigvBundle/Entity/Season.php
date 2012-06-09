@@ -63,6 +63,16 @@ class Season
      */
     protected $rounds; 
     
+    /**
+   * @ORM\OneToMany(targetEntity="VenueSeasonLink", mappedBy="season")
+   */
+    protected $VenueSeasonLinks;
+
+        /**
+   * @ORM\OneToMany(targetEntity="ClubSeasonLink", mappedBy="season")
+   */
+    protected $ClubSeasonLinks;
+    
     public function __construct()
     {
         $this->clubs = new \Doctrine\Common\Collections\ArrayCollection();
@@ -258,5 +268,45 @@ class Season
     public function getRounds()
     {
         return $this->rounds;
+    }
+
+    /**
+     * Add VenueSeasonLinks
+     *
+     * @param Rebase\BigvBundle\Entity\VenueSeasonLink $venueSeasonLinks
+     */
+    public function addVenueSeasonLink(\Rebase\BigvBundle\Entity\VenueSeasonLink $venueSeasonLinks)
+    {
+        $this->VenueSeasonLinks[] = $venueSeasonLinks;
+    }
+
+    /**
+     * Get VenueSeasonLinks
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getVenueSeasonLinks()
+    {
+        return $this->VenueSeasonLinks;
+    }
+
+    /**
+     * Add ClubSeasonLinks
+     *
+     * @param Rebase\BigvBundle\Entity\ClubSeasonLink $clubSeasonLinks
+     */
+    public function addClubSeasonLink(\Rebase\BigvBundle\Entity\ClubSeasonLink $clubSeasonLinks)
+    {
+        $this->ClubSeasonLinks[] = $clubSeasonLinks;
+    }
+
+    /**
+     * Get ClubSeasonLinks
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getClubSeasonLinks()
+    {
+        return $this->ClubSeasonLinks;
     }
 }

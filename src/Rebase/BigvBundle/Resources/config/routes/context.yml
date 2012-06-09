@@ -1,0 +1,37 @@
+_RBV_context_league:
+  pattern: /choose/league
+  defaults: { _controller: RebaseBigvBundle:League:chooseLeague }
+  
+_RBV_context_league_set:
+  pattern: /set/league/{leagueID}
+  defaults: { _controller: RebaseBigvBundle:League:setLeague }
+  requirements:
+    leagueID: \d+
+     
+_RBV_context_season:
+    pattern: /choose/season
+    defaults: { _controller: RebaseBigvBundle:League:chooseSeason }
+
+_RBV_context_season_set:
+    pattern: /set/season/{seasonID}
+    defaults: { _controller: RebaseBigvBundle:League:setSeason }
+    requirements:
+      seasonID: \d+
+      
+_RBV_league_create:
+    pattern: /league/create
+    defaults: { _controller: RebaseBigvBundle:League:edit, leagueID: 0 }
+    
+_RBV_league_edit:
+    pattern: /league/{leagueID}/edit
+    defaults: { _controller: RebaseBigvBundle:League:edit }
+
+_RBV_season_create:
+    pattern: /season/new
+    defaults: { _controller: RebaseBigvBundle:League:editSeason, seasonID: 0 }
+    
+_RBV_season_edit:
+    pattern: /season/{seasonID}/edit
+    defaults: { _controller: RebaseBigvBundle:League:editSeason }
+    requirements:
+      seasonID: \d+

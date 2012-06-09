@@ -1,0 +1,24 @@
+{% extends 'RebaseBigvBundle::base.html.twig' %}
+
+{% block pageTitle %}
+  {{league.getName}}
+{% endblock %}
+ 
+{% block main %}
+<div class="ialist">
+  {% for season in league.seasons %}
+    <div class="ialistitem">
+      {{season.name}}
+      <div class="btn-group" style="float: right">
+          <a class="btn btn-primary" href="{{path('_RBV_season_edit', {'seasonID':season.id}) }}">Settings</a>
+          <a class="btn btn-primary" href="{{path('_RBV_context_season_set', {'seasonID':season.id}) }}">Open</a>
+        </div>
+    </div>
+  {% endfor %}
+   <div class="ialistfooter">
+     <a class="btn" href="{{path('_RBV_season_create')}}">Start new season</a>
+   </div>
+ </div>
+   
+       
+{% endblock %}

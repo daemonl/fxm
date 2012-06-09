@@ -27,7 +27,14 @@ class League
     */
     private $shortname;
 
-    
+    /**
+     * @ORM\OneToMany(targetEntity="Venue", mappedBy="league")
+     */
+    protected $venues;
+     /**
+     * @ORM\OneToMany(targetEntity="Club", mappedBy="league")
+     */
+    protected $clubs;   
     /**
      * @ORM\OneToMany(targetEntity="Season", mappedBy="league")
      */
@@ -133,5 +140,45 @@ class League
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * Add venues
+     *
+     * @param Rebase\BigvBundle\Entity\Venue $venues
+     */
+    public function addVenue(\Rebase\BigvBundle\Entity\Venue $venues)
+    {
+        $this->venues[] = $venues;
+    }
+
+    /**
+     * Get venues
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getVenues()
+    {
+        return $this->venues;
+    }
+
+    /**
+     * Add clubs
+     *
+     * @param Rebase\BigvBundle\Entity\Club $clubs
+     */
+    public function addClub(\Rebase\BigvBundle\Entity\Club $clubs)
+    {
+        $this->clubs[] = $clubs;
+    }
+
+    /**
+     * Get clubs
+     *
+     * @return Doctrine\Common\Collections\Collection 
+     */
+    public function getClubs()
+    {
+        return $this->clubs;
     }
 }

@@ -4,17 +4,15 @@
 <h1>Venue Information</h1>
  <div class="grid_16">
  
- <form class="form-horizontal" method="post" {{ form_enctype(form) }}>
+ <form action="{{ path('_RBV_venue_info', { 'venue': venue.getID()}) }}" method="post" {{ form_enctype(form) }}>
   {{ form_errors(form) }}
-  {{form_row(form.name) }}
-	{{form_row(form.FullName) }}
-	{{form_row(form.Address) }}
-     {{ form_rest(form) }}
-  <div class="form-actions">   
-	  <input class="btn btn-primary" type="submit" value="{% if venue.Id == 0 %}Create{% else %}Update{% endif %}"/>
-  </div>
+	<table class="Form">
+	  <tr><th>{{form_label(form.name) }}:</th><td>{{form_widget(form.name) }}</td>
+	  <tr><th>{{form_label(form.FullName) }}:</th><td>{{form_widget(form.FullName) }}</td>
+	  <tr><th>{{form_label(form.Address) }}:</th><td>{{form_widget(form.Address) }}</td>
+	  <tr><td></td><td><input type="submit" value="Update"/></td></tr>
 	</table>
-	
+	{{ form_rest(form) }}
 </form>
 </div>
 {% endblock %}

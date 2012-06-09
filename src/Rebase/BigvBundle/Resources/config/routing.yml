@@ -2,95 +2,87 @@ _RBV_home:
     pattern:  /
     defaults: { _controller: RebaseBigvBundle:Default:index }
     
-    
-_RBV_league_index:
-    pattern: /league/{leagueID}
-    defaults: { _controller: RebaseBigvBundle:League:index }
-    requirements:
-      leagueID: \d+
+_RBV_L_context:
+    resource: "@RebaseBigvBundle/Resources/config/routes/context.yml"
+    prefix:   /context
+  
+   
 
-_RBV_league_create:
-    pattern: /league/create
-    defaults: { _controller: RebaseBigvBundle:League:edit, leagueID: 0 }
-    
-_RBV_league_edit:
-    pattern: /league/{leagueID}/edit
-    defaults: { _controller: RebaseBigvBundle:League:edit }
-
-_RBV_season_create:
-    pattern: /season/new
-    defaults: { _controller: RebaseBigvBundle:League:editSeason, seasonID: 0 }
-    
-_RBV_season_edit:
-    pattern: /season/{seasonID}/edit
-    defaults: { _controller: RebaseBigvBundle:League:editSeason }
-    requirements:
-      seasonID: \d+
-    
-_RBV_season_index:
-    pattern: /season/{seasonID}
-    defaults: { _controller: RebaseBigvBundle:League:seasonIndex }
-    
-_RBV_settings_index:
-    pattern: /settings
-    defaults: { _controller: RebaseBigvBundle:Settings:index }
-
-_RBV_settings_rounds:
-    pattern: /settings/rounds
-    defaults: { _controller: RebaseBigvBundle:Settings:rounds }
+_RBV_rounds:
+    pattern: /rounds
+    defaults: { _controller: RebaseBigvBundle:Rounds:rounds }
 
 _RBV_settings_rounds_ajax:
     pattern: /settings/rounds/ajax
     defaults: { _controller: RebaseBigvBundle:Settings:roundsAjax }
 
-
-#### VENUE ####
-
-_RBV_venue_index:
+_RBV_venue_index: 
     pattern: /venue
     defaults: { _controller: RebaseBigvBundle:Venue:index }
 
 _RBV_venue_create:
     pattern:  /venue/create
     defaults: { _controller: RebaseBigvBundle:Venue:edit, venueID:0 }
-    
-_RBV_venue_edit:
-    pattern:  /venue/{venueID}/edit
-    defaults: { _controller: RebaseBigvBundle:Venue:edit }
-    requirements:
-      venue: \d+  
 
-_RBV_venue_home:
-    pattern: /venue/{venueID}
-    defaults: { _controller: RebaseBigvBundle:Venue:home }
+_RBV_venue_info:
+    pattern:  /venue/{venueID}/info
+    defaults: { _controller: RebaseBigvBundle:Venue:edit }
     requirements:
       venue: \d+
 
-_RBV_venue_courts:
-    pattern: /venue/{venueID}/courts
-    defaults: { _controller: RebaseBigvBundle:Venue:courts }
+_RBV_venue_use:
+    pattern: /venue/{venueID}
+    defaults: { _controller: RebaseBigvBundle:Venue:use }
+    requirements:
+      venue: \d+
+      
+    
+_RBV_venue_home:
+    pattern: /venue/{vslID}
+    defaults: { _controller: RebaseBigvBundle:Venue:home }
+    requirements:
+      vslID: \d+
+
+_RBV_venue_add_court:
+    pattern: /venue/{vslID}/court/new
+    defaults: { _controller: RebaseBigvBundle:Venue:court, courtID:0 }
+    requirements:
+      vslID: \d+
+      
+_RBV_venue_edit_court:
+    pattern: /venue/{vslID}/court/{courtID}/edit
+    defaults: { _controller: RebaseBigvBundle:Venue:court }
+    requirements:
+      vslID: \d+
+      courtID: \d+
+      
+_RBV_venue_delete_court:
+    pattern: /venue/{vslID}/court/{courtID}/delete
+    defaults: { _controller: RebaseBigvBundle:Venue:courtDelete }
+    requirements:
+      vslID: \d+
+      courtID: \d+
+      
+_RBV_venue_slots:
+    pattern: /venue/{vslID}/slots
+    defaults: { _controller: RebaseBigvBundle:Venue:slots }
+    requirements:
+      vslID: \d+
+
+_RBV_venue_slots_ajax:
+    pattern: /venue/{vslID}/slots/ajax
+    defaults: { _controller: RebaseBigvBundle:Venue:slotsAjax }
+    requirements:
+      vslID: \d+
+
+_RBV_venue_slots_ajax_delete:
+    pattern: /venue/{vslID}/slots/ajaxDelete
+    defaults: { _controller: RebaseBigvBundle:Venue:slotsAjaxDelete }
     requirements:
       venue: \d+
       
 
 
-_RBV_venue_slots:
-    pattern: /venue/{venue}/slots
-    defaults: { _controller: RebaseBigvBundle:Venue:slots }
-    requirements:
-      venue: \d+
-
-_RBV_venue_slots_ajax:
-    pattern: /venue/{venue}/slots/ajax
-    defaults: { _controller: RebaseBigvBundle:Venue:slotsAjax }
-    requirements:
-      venue: \d+
-
-_RBV_venue_slots_ajax_delete:
-    pattern: /venue/{venue}/slots/ajaxDelete
-    defaults: { _controller: RebaseBigvBundle:Venue:slotsAjaxDelete }
-    requirements:
-      venue: \d+
 
 _RBV_division_index:
     pattern: /division
@@ -98,7 +90,7 @@ _RBV_division_index:
 
 _RBV_division_create:
     pattern: /division/create
-    defaults: { _controller: RebaseBigvBundle:Division:create }
+    defaults: { _controller: RebaseBigvBundle:Division:edit, divisionID: 0 }
 
 _RBV_division_delete:
     pattern: /division/{divisionID}/delete
@@ -107,6 +99,10 @@ _RBV_division_delete:
 _RBV_division_edit:
     pattern: /division/{divisionID}/edit
     defaults: { _controller: RebaseBigvBundle:Division:edit }
+    
+    
+
+
 
 _RBV_club_index:
     pattern: /club
@@ -114,24 +110,16 @@ _RBV_club_index:
     
 _RBV_club_create:
     pattern: /club/new
-    defaults: { _controller: RebaseBigvBundle:Club:edit, clubID: 0 }
+    defaults: { _controller: RebaseBigvBundle:Club:edit, cslID: 0 }
     
 _RBV_club_edit:
-    pattern: /club/{clubID}/edit
+    pattern: /club/{cslID}/edit
     defaults: { _controller: RebaseBigvBundle:Club:edit }
     requirements:
       venue: \d+
       
-_RBV_club_addVenueToTeam:
-    pattern: /club/{clubID}/AddVenueToTeam/{teamID}
-    defaults: { _controller: RebaseBigvBundle:Club:AddVenueToTeam }
-    
-_RBV_club_removeVenueFromTeam:
-    pattern: /club/{clubID}/RemoveVenueFromTeam/{linkID}
-    defaults: { _controller: RebaseBigvBundle:Club:RemoveVenueFromTeam }
-    
 _RBV_club_home:
-    pattern: /club/{clubID}
+    pattern: /club/{cslID}
     defaults: { _controller: RebaseBigvBundle:Club:home }
     requirements:
       venue: \d+
@@ -185,7 +173,7 @@ _RBV_dayview_byround:
       round: \d+
 
 _RBV_dayview_byvenue:
-    pattern: /dayview/venue/{venueID}
+    pattern: /dayview/venue/{vslID}
     defaults: { _controller: RebaseBigvBundle:DayView:byvenue }
     requirements:
       venue: \d+    
