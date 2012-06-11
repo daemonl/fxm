@@ -1,5 +1,5 @@
 <?php
-namespace Rebase\BigvBundle\Entity;
+namespace Rebase\BigvBundle\AltObj\Matrix;
 
 use Rebase\BigvBundle\Entity\Setting;
 use Rebase\BigvBundle\Entity\Round;
@@ -27,7 +27,7 @@ class MatrixRound
 
 class MatrixSlot
 {
-	public $VenueID;
+	public $CourtID;
 	public $Priority;
 	public $hasGame;
 	public $SlotID;
@@ -42,7 +42,7 @@ class MatrixSlot
 		  $this->hasGame = 1;
 		}
 		$this->SlotID = $RepoSlot->getId();
-		$this->VenueID = $RepoSlot->getVenue()->getID();
+		$this->CourtID = $RepoSlot->getCourt()->getID();
 		$this->Priority = $RepoSlot->getPriority();
 	}
 }
@@ -119,7 +119,7 @@ class MatrixTeam
 	
 	public function __construct($em, $RepoTeam)
 	{
-		$this->ShortName = $RepoTeam->getClub()->getShortname();
+		$this->ShortName = $RepoTeam->getCsl()->getClub()->getShortname();
 		$this->TeamID = $RepoTeam->getId();
 		$this->VenueLinks = $RepoTeam->getVenueTeamLink();
 	}
@@ -167,31 +167,27 @@ class Matrix
   {
     $divisionID = $division->getID();
 		
-    $query = $em->createQuery("
-      SELECT t, l, v, c FROM RebaseBigvBundle:Team t
-      JOIN t.VenueTeamLink l
-      JOIN t.club c
-      JOIN l.venue v
-      WHERE t.division = $divisionID
-      ");
-    $teams = $query->getResult();
+  
+    $teams = $division->getTeams();
 				
     $query = $em->createQuery("
-      SELECT r, s, v FROM RebaseBigvBundle:Round r
+      SELECT r, s, c, vsl FROM RebaseBigvBundle:Round r
       JOIN r.slots s
-      JOIN s.venue v
+      JOIN s.court c
+      JOIN c.vsl vsl
       ORDER BY r.number
       ");//JOIN s.game g  JOIN g.homeTeam ht JOIN ht.division d
     $rounds = $query->getResult();
 				
     $query = $em->createQuery('
-      SELECT g, ht, hc, at, ac, s, v FROM RebaseBigvBundle:Game g
+      SELECT g, ht, hc, at, ac, s, court, v FROM RebaseBigvBundle:Game g
       JOIN g.homeTeam ht
-      JOIN ht.club hc
+      JOIN ht.csl hc
       JOIN g.awayTeam at
-      JOIN at.club ac 
+      JOIN at.csl ac 
       JOIN g.slot s
-      JOIN s.venue v'
+      JOIN s.court court
+      JOIN court.vsl v'
       );
     $games = $query->getResult();
 		

@@ -9,10 +9,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Rebase\BigvBundle\Entity\Setting;
 use Rebase\BigvBundle\Entity\Round;
 use Rebase\BigvBundle\Entity\Calendar;
-use Rebase\BigvBundle\Entity\Matrix;
+use Rebase\BigvBundle\AltObj\Matrix\Matrix;
 use Rebase\BigvBundle\Common\BasicFunctions;
 
-class MatrixController extends Controller
+class MatrixController extends _Season
 {
  
   public function indexAction()
@@ -21,6 +21,8 @@ class MatrixController extends Controller
 	   $divisions = $em->getRepository('RebaseBigvBundle:Division')->findAll();
 	   return $this->render('RebaseBigvBundle:Matrix:index.html.twig', array('divisions'=>$divisions));
   }
+  
+  
   public function viewAction($divisionName)
   {
 	 $em = $this->getDoctrine()->getEntityManager();

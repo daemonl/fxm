@@ -18,13 +18,13 @@ class VenueTeamLink
     private $id;
 	
 	/**
-     * @ORM\ManyToOne(targetEntity="Team", inversedBy="VenueTeamLink")
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="VenueTeamLinks")
      * @ORM\JoinColumn(name="team_id", referencedColumnName="id")
      */
 	private $team;
 
 	/**
-     * @ORM\ManyToOne(targetEntity="Venue", inversedBy="VenueTeamLink")
+     * @ORM\ManyToOne(targetEntity="Venue", inversedBy="VenueTeamLinks")
      * @ORM\JoinColumn(name="venue_id", referencedColumnName="id")
      */
 	private $venue;

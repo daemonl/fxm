@@ -5,7 +5,7 @@ use Rebase\BigvBundle\Entity\Setting;
 use Rebase\BigvBundle\Entity\Round;
 use Rebase\BigvBundle\Entity\Venue;
 use Rebase\BigvBundle\Entity\Calendar;
-use Rebase\BigvBundle\Common\BasicFunctions; 
+use Rebase\BigvBundle\Common\BasicFunctions;
 
 class DayViewSuper
 {

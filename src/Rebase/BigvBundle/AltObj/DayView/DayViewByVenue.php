@@ -41,7 +41,6 @@ class DayViewByVenue extends DayView
     
     foreach ($this->Rounds as $R)
     {
-    
       $Subs = Array();
       foreach ($R->getDays() as $D)
       { 

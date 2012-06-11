@@ -83,7 +83,7 @@ class GameController extends Controller
     if (!$slot)    
     {
 		  $query = $em->createQuery('
-SELECT s FROM RebaseBigvBundle:Slot s JOIN s.venue v JOIN v.VenueTeamLink l WHERE s.start = :date AND l.team = :hometeam AND s.game IS NULL ORDER BY s.priority DESC'
+SELECT s FROM RebaseBigvBundle:Slot s JOIN s.court v JOIN v.VenueTeamLink l WHERE s.start = :date AND l.team = :hometeam AND s.game IS NULL ORDER BY s.priority DESC'
       )->setParameter('date', $game->getDate()->format("Y-m-d H:i:s"))
        ->setParameter('hometeam', $game->getHomeTeam()->getId());
         $r = $query->getResult();

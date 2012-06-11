@@ -21,7 +21,7 @@ class LeagueController extends _Parent
     $qb = $em->createQueryBuilder()
             ->add('select', 'up')
             ->add('from', 'RebaseBigvBundle:UserPermission up')
-            ->add('where', 'up.user = ?1')
+            ->add('where', 'up.userID = ?1')
             ->setParameter(1, $this->get('security.context')->getToken()->getUser()->getId());
     $query = $qb->getQuery();
     $permissions = $query->getResult();
