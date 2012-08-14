@@ -4,7 +4,7 @@
     database_port=""
     database_name="bigv2"
     database_user="root"
-    database_password="+987swee"
+    database_password=""
     mailer_transport="smtp"
     mailer_host="localhost"
     mailer_user=""
